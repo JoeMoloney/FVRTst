@@ -1,9 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-
 
 public class TextAnimation : MonoBehaviour
 {
@@ -43,8 +40,11 @@ public class TextAnimation : MonoBehaviour
                 //Debug.Log(npc.NPCDetails());
                 Debug.Log(CharName);
                 goatText[0] = npc.Name;
-                if(RelationshipLevel == 0)
-                goatText[1] = npc.Acquaintance1;
+                if (RelationshipLevel == 0)
+                {
+                    string[] AcquaintanceReplies = new string[] { npc.Acquaintance1, npc.Acquaintance2 };
+                    goatText[1] = AcquaintanceReplies[Random.Range(0,2)];
+                }
                 StartCoroutine(AnimateText());
             }
         }

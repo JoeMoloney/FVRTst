@@ -9,11 +9,13 @@ public class Player : MonoBehaviour
         TextAnimation.Instance.canvas.enabled = true;
         if (other.gameObject.CompareTag("Peter"))
         {
-            TextAnimation.Instance.NameChecker(other.name);
+            TextAnimation.Instance.NameChecker(other.name, other.gameObject.GetComponent<NPCs>().Relationship);
+            other.gameObject.GetComponent<NPCs>().Relationship++;
         }
         else if (other.gameObject.CompareTag("Flynn"))
         {
-            TextAnimation.Instance.NameChecker(other.name);
+            TextAnimation.Instance.NameChecker(other.name, other.gameObject.GetComponent<NPCs>().Relationship);
+            other.gameObject.GetComponent<NPCs>().Relationship++;
         }
     }
 
