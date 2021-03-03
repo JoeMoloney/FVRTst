@@ -1877,7 +1877,7 @@ MonoBehaviour:
   JobBool: 0
   ElectionBool: 0
   textBox: {fileID: 61981075}
-  TextSpeed: 0.2
+  TextSpeed: 0.125
   goatText:
   - 
   - 
