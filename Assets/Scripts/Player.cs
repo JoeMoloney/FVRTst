@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
+        UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
         TextAnimation.Instance.canvas.enabled = true;
         Debug.Log(other.gameObject.GetComponent<NPCs>().Relationship);
         if (other.gameObject.CompareTag("Peter"))

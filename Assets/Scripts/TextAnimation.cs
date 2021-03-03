@@ -106,10 +106,12 @@ public class TextAnimation : MonoBehaviour
         {
             if(i < (goatText[currentlyDisplayingText].Length)){
                 textBox.text = goatText[currentlyDisplayingText].Substring(0, i) + "|";
+                
             }
             else
             {
                 textBox.text = goatText[currentlyDisplayingText].Substring(0, i);
+                UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = true;
             }
             
             yield return new WaitForSeconds(TextSpeed);
