@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("Flynn"))
         {
+            NPCTalkingTo = other.gameObject;
             TextAnimation.Instance.NameChecker(other.name, other.gameObject.GetComponent<NPCs>().Relationship);
             other.gameObject.GetComponent<NPCs>().Relationship++;
         }
@@ -26,6 +27,8 @@ public class Player : MonoBehaviour
 
     public void GetQuest()
     {
+        TextAnimation.Instance.StopAllCoroutines();
+
         UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
 
         TextAnimation.Instance.getQuestBool = true;
@@ -35,6 +38,8 @@ public class Player : MonoBehaviour
 
     public void CompleteQuest()
     {
+        TextAnimation.Instance.StopAllCoroutines();
+
         UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
 
         TextAnimation.Instance.CompletedQuestBool = true;
@@ -47,6 +52,8 @@ public class Player : MonoBehaviour
 
     public void Job()
     {
+        TextAnimation.Instance.StopAllCoroutines();
+
         UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
 
         TextAnimation.Instance.CompletedQuestBool = false;
@@ -54,11 +61,13 @@ public class Player : MonoBehaviour
         TextAnimation.Instance.JobBool = true;
         TextAnimation.Instance.ElectionBool = false;
 
-        TextAnimation.Instance.NameChecker(NPCTalkingTo.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+        TextAnimation.Instance.NameChecker(NPCTalkingTo.gameObject.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
     }
 
     public void Election()
     {
+        TextAnimation.Instance.StopAllCoroutines();
+
         UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
 
         TextAnimation.Instance.CompletedQuestBool = false;
@@ -66,7 +75,7 @@ public class Player : MonoBehaviour
         TextAnimation.Instance.JobBool = false;
         TextAnimation.Instance.ElectionBool = true;
 
-        TextAnimation.Instance.NameChecker(NPCTalkingTo.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+        TextAnimation.Instance.NameChecker(NPCTalkingTo.gameObject.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
     }
 
 
