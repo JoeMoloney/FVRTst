@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    private GameObject NPCTalkingTo = null;
+    
     private void OnTriggerEnter(Collider other)
     {
         UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
@@ -11,6 +13,7 @@ public class Player : MonoBehaviour
         Debug.Log(other.gameObject.GetComponent<NPCs>().Relationship);
         if (other.gameObject.CompareTag("Peter"))
         {
+            NPCTalkingTo = other.gameObject;
             TextAnimation.Instance.NameChecker(other.name, other.gameObject.GetComponent<NPCs>().Relationship);
             other.gameObject.GetComponent<NPCs>().Relationship++;
         }
@@ -21,7 +24,52 @@ public class Player : MonoBehaviour
         }
     }
 
-    
+    public void GetQuest()
+    {
+        UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
+
+        TextAnimation.Instance.getQuestBool = true;
+
+        TextAnimation.Instance.NameChecker(NPCTalkingTo.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+    }
+
+    public void CompleteQuest()
+    {
+        UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
+
+        TextAnimation.Instance.CompletedQuestBool = true;
+        TextAnimation.Instance.getQuestBool = false;
+        TextAnimation.Instance.JobBool = false;
+        TextAnimation.Instance.ElectionBool = false;
+
+        TextAnimation.Instance.NameChecker(NPCTalkingTo.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+    }
+
+    public void Job()
+    {
+        UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
+
+        TextAnimation.Instance.CompletedQuestBool = false;
+        TextAnimation.Instance.getQuestBool = false;
+        TextAnimation.Instance.JobBool = true;
+        TextAnimation.Instance.ElectionBool = false;
+
+        TextAnimation.Instance.NameChecker(NPCTalkingTo.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+    }
+
+    public void Election()
+    {
+        UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
+
+        TextAnimation.Instance.CompletedQuestBool = false;
+        TextAnimation.Instance.getQuestBool = false;
+        TextAnimation.Instance.JobBool = false;
+        TextAnimation.Instance.ElectionBool = true;
+
+        TextAnimation.Instance.NameChecker(NPCTalkingTo.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+    }
+
+
 
     private void OnTriggerExit(Collider other)
     {

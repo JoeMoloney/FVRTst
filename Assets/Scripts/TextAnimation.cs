@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +21,12 @@ public class TextAnimation : MonoBehaviour
     private int placeInArray = 0;
     Dialogues npcDialogue;
     [SerializeField] public Canvas canvas;
+    private string characterInteractedWith = null;
+    public bool getQuestBool = false;
+    public bool CompletedQuestBool = false;
+    public bool JobBool = false;
+    public bool ElectionBool = false;
+    
 
     //Notes:
     //Dialogues - Array DataStructure to hold Objects with attributes of NPCDialogue
@@ -35,38 +42,67 @@ public class TextAnimation : MonoBehaviour
     {
         foreach (NPCDialogue npc in npcDialogue.dialogues) //Foreach object within' Json File
         {
+           
             if (CharName == npc.Name)
             {
-                //Debug.Log(npc.NPCDetails());
-                Debug.Log(CharName);
-                
-                if (RelationshipLevel == 0)
+                if (getQuestBool)
                 {
-                    goatText[0] = (npc.Name + ": " + npc.Introduction);
-                    
-                }else if(RelationshipLevel == 1)
+                    goatText[0] = npc.Quest;
+                }else if(CompletedQuestBool)
                 {
-                    if (npc.Acquaintance2 != null)
-                    {
-                        string[] AcquaintanceReplies = new string[] { npc.Acquaintance1, npc.Acquaintance2 };
-                        goatText[0] = AcquaintanceReplies[Random.Range(0, 2)];
-                    }
-                    else
-                    {
-                        goatText[0] = npc.Acquaintance1;
-                    }
+                    goatText[0] = npc.QuestComplete;
+                }else if (JobBool)
+                {
+                    goatText[0] = npc.Job;
                 }
-                else if(RelationshipLevel == 2)
+                else if (ElectionBool)
                 {
-                    string[] FriendReplies = new string[] { npc.Friend1, npc.Friend2, npc.Friend3 };
-                    goatText[0] = FriendReplies[Random.Range(0, 3)];
+                    goatText[0] = npc.Election;
+                }
+                else
+                {
+                    //Debug.Log(npc.NPCDetails());
+                    Debug.Log(CharName);
+                    characterInteractedWith = CharName;
+                    if (RelationshipLevel == 0)
+                    {
+                        goatText[0] = (npc.Name + ": " + npc.Introduction);
+
+                    }
+                    else if (RelationshipLevel == 1)
+                    {
+                        if (npc.Acquaintance2 != null)
+                        {
+                            string[] AcquaintanceReplies = new string[] { npc.Acquaintance1, npc.Acquaintance2 };
+                            goatText[0] = AcquaintanceReplies[UnityEngine.Random.Range(0, 2)];
+                        }
+                        else
+                        {
+                            goatText[0] = npc.Acquaintance1;
+                        }
+                    }
+                    else if (RelationshipLevel >= 2)
+                    {
+                        string[] FriendReplies = new string[] { npc.Friend1, npc.Friend2, npc.Friend3 };
+                        goatText[0] = FriendReplies[UnityEngine.Random.Range(0, 3)];
+                    }
                 }
                 StartCoroutine(AnimateText());
             }
         }
     }
 
-    
+    //public void ButtonPressed(string button)
+    //{
+    //    foreach (NPCDialogue npc in npcDialogue.dialogues) //Foreach object within' Json File
+    //    {
+    //        if (characterInteractedWith == npc.Name)
+    //        {
+    //            if(GetQuest.GetComponent<Button>().onClick.AddListener(action)
+    //        }
+
+    //    }
+    //}
 
     public Text textBox;
     [SerializeField] float TextSpeed = 0.5f;
