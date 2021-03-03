@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
         }
     }
 
+    
+
     private void OnTriggerExit(Collider other)
     {
         TextAnimation.Instance.StopAllCoroutines();

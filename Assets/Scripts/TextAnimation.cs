@@ -51,6 +51,10 @@ public class TextAnimation : MonoBehaviour
                         string[] AcquaintanceReplies = new string[] { npc.Acquaintance1, npc.Acquaintance2 };
                         goatText[0] = AcquaintanceReplies[Random.Range(0, 2)];
                     }
+                    else
+                    {
+                        goatText[0] = npc.Acquaintance1;
+                    }
                 }
                 else if(RelationshipLevel == 2)
                 {
@@ -62,10 +66,7 @@ public class TextAnimation : MonoBehaviour
         }
     }
 
-    private void Interact()
-    {
-        //string name = "Peter";
-    }
+    
 
     public Text textBox;
     [SerializeField] float TextSpeed = 0.5f;
