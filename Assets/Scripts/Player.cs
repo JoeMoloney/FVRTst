@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         TextAnimation.Instance.canvas.enabled = true;
+        Debug.Log(other.gameObject.GetComponent<NPCs>().Relationship);
         if (other.gameObject.CompareTag("Peter"))
         {
             TextAnimation.Instance.NameChecker(other.name, other.gameObject.GetComponent<NPCs>().Relationship);
@@ -23,9 +24,11 @@ public class Player : MonoBehaviour
     {
         TextAnimation.Instance.StopAllCoroutines();
         TextAnimation.Instance.canvas.enabled = false;
-        for(int i = 0; i<TextAnimation.Instance.goatText.Length; i++)
+        TextAnimation.Instance.currentlyDisplayingText = 0;
+        for (int i = 0; i<TextAnimation.Instance.goatText.Length; i++)
         {
             TextAnimation.Instance.goatText[i] = null;
+            
         }
     }
 }
