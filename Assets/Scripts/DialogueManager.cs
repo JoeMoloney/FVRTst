@@ -57,42 +57,15 @@ public class DialogueManager : MonoBehaviour
             if (CharName == npc.Name)
             {
                 //check if a button has been used and therefore need to set the reply to this first
-                if (getQuestBool)
-                {
-                    NPCReplyText = npc.Quest;
-                }else if(CompletedQuestBool)
-                {
-                    NPCReplyText = npc.QuestComplete;
-                }else if (JobBool)
-                {
-                    NPCReplyText = npc.Job;
-                }
-                else if (ElectionBool)
-                {
-                    NPCReplyText = npc.Election;
-                }
-                else if (BuildingQBool)
-                {
-                    NPCReplyText = npc.BuildingQ;
-                }
-                else if (BuildingCompleteBool)
-                {
-                    NPCReplyText = npc.BuildingComplete;
-                }
-                else
-                //if it's not a button, what relationship level are we at, and what do we need to reply with?
-                {
                     Debug.Log(CharName); //for testing purposes
                     characterInteractedWith = CharName;
-                    //if they've never met
-                    if (RelationshipLevel == 0)
-                    {
+                    if (RelationshipLevel == 0)//if they've never met
+                {
                         NPCReplyText = (npc.Name + ": " + npc.Introduction);
 
                     }
-                    //met once - Acquaintance
-                    else if (RelationshipLevel == 1)
-                    {
+                    else if (RelationshipLevel == 1)//met once - Acquaintance
+                {
                         if (npc.Acquaintance2 != null)
                         {
                             string[] AcquaintanceReplies = new string[] { npc.Acquaintance1, npc.Acquaintance2 }; //add all possible replies into an array for randomisation if there are 2 replies
@@ -103,22 +76,43 @@ public class DialogueManager : MonoBehaviour
                             NPCReplyText = npc.Acquaintance1; // if the npc only has one acquaintance reply
                         }
                     }
-                    else if (RelationshipLevel == 2)
-                        //met twice - friend
-                    {
+                    else if (RelationshipLevel == 2)//met twice - friend
+                {
                         string[] FriendReplies = new string[] { npc.Friend1, npc.Friend2, npc.Friend3 };
                         NPCReplyText = FriendReplies[UnityEngine.Random.Range(0, 3)];
                     }
-                    else if(RelationshipLevel >= 3)
-                        //met 3+ times - best friend
+                    else if(RelationshipLevel >= 3)//met 3+ times - best friend
                     {
                         string[] BestFriendReplies = new string[] { npc.BestFriend1, npc.BestFriend2 };
                         NPCReplyText = BestFriendReplies[UnityEngine.Random.Range(0, 2)];
                     }
-                }
+            }
                 StartCoroutine(AnimateText());//start the typewriter effect
                 break;//stop the foreach loop continuing after we've found our target npc
+        }
+    }
+
+    public void  ButtonChecker(string CharName)
+    {
+        foreach (NPCDialogue npc in npcDialogue.dialogues) //Foreach object within' Json File
+        {
+            if (CharName == npc.Name)
+            { //check if a button has been used and therefore need to set the reply to this first
+                if (getQuestBool)
+                    NPCReplyText = npc.Quest;
+                else if (CompletedQuestBool)
+                    NPCReplyText = npc.QuestComplete;
+                else if (JobBool)
+                    NPCReplyText = npc.Job;
+                else if (ElectionBool)
+                    NPCReplyText = npc.Election;
+                else if (BuildingQBool)
+                    NPCReplyText = npc.BuildingQ;
+                else if (BuildingCompleteBool)
+                    NPCReplyText = npc.BuildingComplete;
             }
+            StartCoroutine(AnimateText());//start the typewriter effect
+            break;//stop the foreach loop continuing after we've found our target npc
         }
     }
 

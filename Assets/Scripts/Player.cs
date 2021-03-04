@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
 
         DialogueManager.Instance.getQuestBool = true;
 
-        DialogueManager.Instance.NameChecker(NPCTalkingTo.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+        DialogueManager.Instance.ButtonChecker(NPCTalkingTo.name);
     }
 
     public void CompleteQuest()//pressing the completed quest button to sim this situation happening in the game
@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
         DialogueManager.Instance.CompletedQuestBool = true;
         DialogueManager.Instance.getQuestBool = false;
 
-        DialogueManager.Instance.NameChecker(NPCTalkingTo.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+        DialogueManager.Instance.ButtonChecker(NPCTalkingTo.name);
     }
 
     public void Job()//pressing the job button to sim this situation happening in the game
@@ -56,7 +56,7 @@ public class Player : MonoBehaviour
         DialogueManager.Instance.getQuestBool = false;
         DialogueManager.Instance.JobBool = true;
 
-        DialogueManager.Instance.NameChecker(NPCTalkingTo.gameObject.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+        DialogueManager.Instance.ButtonChecker(NPCTalkingTo.name);
     }
 
     public void Election()//pressing the election button to sim this situation happening in the game
@@ -70,7 +70,7 @@ public class Player : MonoBehaviour
         DialogueManager.Instance.JobBool = false;
         DialogueManager.Instance.ElectionBool = true;
 
-        DialogueManager.Instance.NameChecker(NPCTalkingTo.gameObject.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+        DialogueManager.Instance.ButtonChecker(NPCTalkingTo.name);
     }
 
     public void BuildingQ()//pressing the get the building quest button to sim this situation happening in the game
@@ -85,7 +85,7 @@ public class Player : MonoBehaviour
         DialogueManager.Instance.ElectionBool = false;
         DialogueManager.Instance.BuildingQBool = true;
 
-        DialogueManager.Instance.NameChecker(NPCTalkingTo.gameObject.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+        DialogueManager.Instance.ButtonChecker(NPCTalkingTo.name);
     }
 
     public void BuildingComplete()//pressing the building quest complete button to sim this situation happening in the game
@@ -101,7 +101,7 @@ public class Player : MonoBehaviour
         DialogueManager.Instance.BuildingQBool = false;
         DialogueManager.Instance.BuildingCompleteBool = true;
 
-        DialogueManager.Instance.NameChecker(NPCTalkingTo.gameObject.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+        DialogueManager.Instance.ButtonChecker(NPCTalkingTo.name);
     }
 
 
