@@ -9,86 +9,110 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
-        TextAnimation.Instance.canvas.enabled = true;
+        DialogueManager.Instance.canvas.enabled = true;
         Debug.Log(other.gameObject.GetComponent<NPCs>().Relationship);
         if (other.gameObject.CompareTag("Peter"))
         {
             NPCTalkingTo = other.gameObject;
-            TextAnimation.Instance.NameChecker(other.name, other.gameObject.GetComponent<NPCs>().Relationship);
+            DialogueManager.Instance.NameChecker(other.name, other.gameObject.GetComponent<NPCs>().Relationship);
             other.gameObject.GetComponent<NPCs>().Relationship++;
         }
         else if (other.gameObject.CompareTag("Flynn"))
         {
             NPCTalkingTo = other.gameObject;
-            TextAnimation.Instance.NameChecker(other.name, other.gameObject.GetComponent<NPCs>().Relationship);
+            DialogueManager.Instance.NameChecker(other.name, other.gameObject.GetComponent<NPCs>().Relationship);
             other.gameObject.GetComponent<NPCs>().Relationship++;
         }
     }
 
     public void GetQuest()
     {
-        TextAnimation.Instance.StopAllCoroutines();
+        DialogueManager.Instance.StopAllCoroutines();
 
         UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
 
-        TextAnimation.Instance.getQuestBool = true;
+        DialogueManager.Instance.getQuestBool = true;
 
-        TextAnimation.Instance.NameChecker(NPCTalkingTo.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+        DialogueManager.Instance.NameChecker(NPCTalkingTo.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
     }
 
     public void CompleteQuest()
     {
-        TextAnimation.Instance.StopAllCoroutines();
+        DialogueManager.Instance.StopAllCoroutines();
 
         UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
 
-        TextAnimation.Instance.CompletedQuestBool = true;
-        TextAnimation.Instance.getQuestBool = false;
-        TextAnimation.Instance.JobBool = false;
-        TextAnimation.Instance.ElectionBool = false;
+        DialogueManager.Instance.CompletedQuestBool = true;
+        DialogueManager.Instance.getQuestBool = false;
 
-        TextAnimation.Instance.NameChecker(NPCTalkingTo.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+        DialogueManager.Instance.NameChecker(NPCTalkingTo.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
     }
 
     public void Job()
     {
-        TextAnimation.Instance.StopAllCoroutines();
+        DialogueManager.Instance.StopAllCoroutines();
 
         UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
 
-        TextAnimation.Instance.CompletedQuestBool = false;
-        TextAnimation.Instance.getQuestBool = false;
-        TextAnimation.Instance.JobBool = true;
-        TextAnimation.Instance.ElectionBool = false;
+        DialogueManager.Instance.CompletedQuestBool = false;
+        DialogueManager.Instance.getQuestBool = false;
+        DialogueManager.Instance.JobBool = true;
 
-        TextAnimation.Instance.NameChecker(NPCTalkingTo.gameObject.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+        DialogueManager.Instance.NameChecker(NPCTalkingTo.gameObject.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
     }
 
     public void Election()
     {
-        TextAnimation.Instance.StopAllCoroutines();
+        DialogueManager.Instance.StopAllCoroutines();
 
         UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
 
-        TextAnimation.Instance.CompletedQuestBool = false;
-        TextAnimation.Instance.getQuestBool = false;
-        TextAnimation.Instance.JobBool = false;
-        TextAnimation.Instance.ElectionBool = true;
+        DialogueManager.Instance.CompletedQuestBool = false;
+        DialogueManager.Instance.getQuestBool = false;
+        DialogueManager.Instance.JobBool = false;
+        DialogueManager.Instance.ElectionBool = true;
 
-        TextAnimation.Instance.NameChecker(NPCTalkingTo.gameObject.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+        DialogueManager.Instance.NameChecker(NPCTalkingTo.gameObject.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+    }
+
+    public void BuildingQ()
+    {
+        DialogueManager.Instance.StopAllCoroutines();
+
+        UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
+
+        DialogueManager.Instance.CompletedQuestBool = false;
+        DialogueManager.Instance.getQuestBool = false;
+        DialogueManager.Instance.JobBool = false;
+        DialogueManager.Instance.ElectionBool = false;
+        DialogueManager.Instance.BuildingQBool = true;
+
+        DialogueManager.Instance.NameChecker(NPCTalkingTo.gameObject.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
+    }
+
+    public void BuildingComplete()
+    {
+        DialogueManager.Instance.StopAllCoroutines();
+
+        UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
+
+        DialogueManager.Instance.CompletedQuestBool = false;
+        DialogueManager.Instance.getQuestBool = false;
+        DialogueManager.Instance.JobBool = false;
+        DialogueManager.Instance.ElectionBool = false;
+        DialogueManager.Instance.BuildingQBool = false;
+        DialogueManager.Instance.BuildingCompleteBool = true;
+
+        DialogueManager.Instance.NameChecker(NPCTalkingTo.gameObject.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
     }
 
 
 
     private void OnTriggerExit(Collider other)
     {
-        TextAnimation.Instance.StopAllCoroutines();
-        TextAnimation.Instance.canvas.enabled = false;
-        TextAnimation.Instance.currentlyDisplayingText = 0;
-        for (int i = 0; i<TextAnimation.Instance.goatText.Length; i++)
-        {
-            TextAnimation.Instance.goatText[i] = null;
-            
-        }
+        DialogueManager.Instance.NPCReplyText = null;
+        DialogueManager.Instance.StopAllCoroutines();
+        DialogueManager.Instance.canvas.enabled = false;
+        DialogueManager.Instance.currentlyDisplayingText = 0;
     }
 }
