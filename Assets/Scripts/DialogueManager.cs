@@ -2,13 +2,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TextAnimation : MonoBehaviour
-{
-
+public class DialogueManager : MonoBehaviour
+{ 
     //creaing an Instance
-    private static TextAnimation instance;
+    private static DialogueManager instance;
 
-    public static TextAnimation Instance
+    public static DialogueManager Instance
     {
         get
         {

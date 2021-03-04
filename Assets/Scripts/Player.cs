@@ -1,23 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     private GameObject NPCTalkingTo = null;
     
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)//as the player collides with one of the box npcs.
     {
-        UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false;
-        DialogueManager.Instance.canvas.enabled = true;
-        Debug.Log(other.gameObject.GetComponent<NPCs>().Relationship);
-        if (other.gameObject.CompareTag("Peter"))
+        UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false; //don't allow the player to move anymore
+        DialogueManager.Instance.canvas.enabled = true; // show the canvas for text box, text and buttons
+        Debug.Log(other.gameObject.GetComponent<NPCs>().Relationship); // for testing
+        if (other.gameObject.CompareTag("Peter"))//are we talking to peter?
         {
             NPCTalkingTo = other.gameObject;
-            DialogueManager.Instance.NameChecker(other.name, other.gameObject.GetComponent<NPCs>().Relationship);
-            other.gameObject.GetComponent<NPCs>().Relationship++;
+            DialogueManager.Instance.NameChecker(other.name, other.gameObject.GetComponent<NPCs>().Relationship); //run namechecker
+            other.gameObject.GetComponent<NPCs>().Relationship++; // simulate increasing the relationship level
         }
-        else if (other.gameObject.CompareTag("Flynn"))
+        else if (other.gameObject.CompareTag("Flynn"))//are we talking to flynn?
         {
             NPCTalkingTo = other.gameObject;
             DialogueManager.Instance.NameChecker(other.name, other.gameObject.GetComponent<NPCs>().Relationship);
@@ -25,7 +23,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void GetQuest()
+    public void GetQuest() //pressing the get quest button to sim this situation happening in the game
     {
         DialogueManager.Instance.StopAllCoroutines();
 
@@ -36,7 +34,7 @@ public class Player : MonoBehaviour
         DialogueManager.Instance.NameChecker(NPCTalkingTo.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
     }
 
-    public void CompleteQuest()
+    public void CompleteQuest()//pressing the completed quest button to sim this situation happening in the game
     {
         DialogueManager.Instance.StopAllCoroutines();
 
@@ -48,7 +46,7 @@ public class Player : MonoBehaviour
         DialogueManager.Instance.NameChecker(NPCTalkingTo.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
     }
 
-    public void Job()
+    public void Job()//pressing the job button to sim this situation happening in the game
     {
         DialogueManager.Instance.StopAllCoroutines();
 
@@ -61,7 +59,7 @@ public class Player : MonoBehaviour
         DialogueManager.Instance.NameChecker(NPCTalkingTo.gameObject.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
     }
 
-    public void Election()
+    public void Election()//pressing the election button to sim this situation happening in the game
     {
         DialogueManager.Instance.StopAllCoroutines();
 
@@ -75,7 +73,7 @@ public class Player : MonoBehaviour
         DialogueManager.Instance.NameChecker(NPCTalkingTo.gameObject.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
     }
 
-    public void BuildingQ()
+    public void BuildingQ()//pressing the get the building quest button to sim this situation happening in the game
     {
         DialogueManager.Instance.StopAllCoroutines();
 
@@ -90,7 +88,7 @@ public class Player : MonoBehaviour
         DialogueManager.Instance.NameChecker(NPCTalkingTo.gameObject.name, NPCTalkingTo.gameObject.GetComponent<NPCs>().Relationship);
     }
 
-    public void BuildingComplete()
+    public void BuildingComplete()//pressing the building quest complete button to sim this situation happening in the game
     {
         DialogueManager.Instance.StopAllCoroutines();
 
@@ -108,8 +106,9 @@ public class Player : MonoBehaviour
 
 
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other) //when the player leaves the box that they were colliding with in the first place
     {
+        //in here I'm resetting the text that was in the textbox so it doesn't cause bugs. I'm also turning the canvas off so it's not always on screen, only when they're talking
         DialogueManager.Instance.NPCReplyText = null;
         DialogueManager.Instance.StopAllCoroutines();
         DialogueManager.Instance.canvas.enabled = false;
