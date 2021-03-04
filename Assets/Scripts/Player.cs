@@ -3,7 +3,7 @@
 public class Player : MonoBehaviour
 {
     private GameObject NPCTalkingTo = null;
-    
+    #region Triggers
     private void OnTriggerEnter(Collider other)//as the player collides with one of the box npcs.
     {
         UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false; //don't allow the player to move anymore
@@ -22,6 +22,16 @@ public class Player : MonoBehaviour
             other.gameObject.GetComponent<NPCs>().Relationship++;
         }
     }
+
+    private void OnTriggerExit(Collider other) //when the player leaves the box that they were colliding with in the first place
+    {
+        //in here I'm resetting the text that was in the textbox so it doesn't cause bugs. I'm also turning the canvas off so it's not always on screen, only when they're talking
+        DialogueManager.Instance.NPCReplyText = null;
+        DialogueManager.Instance.StopAllCoroutines();
+        DialogueManager.Instance.canvas.enabled = false;
+        DialogueManager.Instance.currentlyDisplayingText = 0;
+    }
+    #endregion
 
     #region button methods
     public void GetQuest() //pressing the get quest button to sim this situation happening in the game
@@ -107,12 +117,4 @@ public class Player : MonoBehaviour
 
     #endregion
 
-    private void OnTriggerExit(Collider other) //when the player leaves the box that they were colliding with in the first place
-    {
-        //in here I'm resetting the text that was in the textbox so it doesn't cause bugs. I'm also turning the canvas off so it's not always on screen, only when they're talking
-        DialogueManager.Instance.NPCReplyText = null;
-        DialogueManager.Instance.StopAllCoroutines();
-        DialogueManager.Instance.canvas.enabled = false;
-        DialogueManager.Instance.currentlyDisplayingText = 0;
-    }
 }
