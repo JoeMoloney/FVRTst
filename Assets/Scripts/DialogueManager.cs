@@ -34,6 +34,7 @@ public class DialogueManager : MonoBehaviour
 
     void Awake()
     {
+        //ensure that there's one and only one instance
         if (instance != null && instance != this)
         {
             Destroy(this.gameObject);
