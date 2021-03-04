@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    #region button methods
     public void GetQuest() //pressing the get quest button to sim this situation happening in the game
     {
         DialogueManager.Instance.StopAllCoroutines();
@@ -104,7 +105,7 @@ public class Player : MonoBehaviour
         DialogueManager.Instance.ButtonChecker(NPCTalkingTo.name);
     }
 
-
+    #endregion
 
     private void OnTriggerExit(Collider other) //when the player leaves the box that they were colliding with in the first place
     {

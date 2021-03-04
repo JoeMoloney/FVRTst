@@ -16,21 +16,25 @@ public class DialogueManager : MonoBehaviour
     }
 
     //global Variables
-    public TextAsset jsonFile;
-    private int placeInArray = 0;
-    Dialogues npcDialogue;
     [SerializeField] public Canvas canvas;
-    public Text textBox;
     [SerializeField] float TextSpeed = 0.5f;
-    public string NPCReplyText = null;
-    public int currentlyDisplayingText = 0;
+    Dialogues npcDialogue;
+    
     private string characterInteractedWith = null;
+    private int placeInArray = 0;
+    public int currentlyDisplayingText = 0;
+    public TextAsset jsonFile;
+    public string NPCReplyText = null;
+    public Text textBox;
+    #region buttonBools
     public bool getQuestBool = false;
     public bool CompletedQuestBool = false;
     public bool JobBool = false;
     public bool ElectionBool = false;
     public bool BuildingQBool = false;
     public bool BuildingCompleteBool = false;
+    #endregion
+
 
     void Awake()
     {
