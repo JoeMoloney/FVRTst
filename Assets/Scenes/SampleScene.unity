@@ -2283,7 +2283,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1727719834}
-  - component: {fileID: 1727719833}
   - component: {fileID: 1727719835}
   m_Layer: 0
   m_Name: DialogueManager
@@ -2292,20 +2291,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1727719833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1727719832}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b551e404e761a4541bd7aed9212593fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  keyedJson: {fileID: 4900000, guid: 2eb7cd2017082504e8ae085a44037331, type: 3}
-  uiText: {fileID: 61981075}
 --- !u!4 &1727719834
 Transform:
   m_ObjectHideFlags: 0
@@ -2332,12 +2317,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd0d28a99f108ea4fbae381b4cb8a67d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jsonFile: {fileID: 4900000, guid: 75c9f37080db7d54ab4223bd9b8f41bd, type: 3}
   canvas: {fileID: 1294941758}
-  textBox: {fileID: 61981075}
   TextSpeed: 0.125
-  NPCReplyText: 
   currentlyDisplayingText: 0
+  jsonFile: {fileID: 4900000, guid: 75c9f37080db7d54ab4223bd9b8f41bd, type: 3}
+  NPCReplyText: 
+  textBox: {fileID: 61981075}
   getQuestBool: 0
   CompletedQuestBool: 0
   JobBool: 0
