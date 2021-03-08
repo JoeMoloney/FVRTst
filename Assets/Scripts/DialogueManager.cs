@@ -18,7 +18,7 @@ public class DialogueManager : MonoBehaviour
     //global Variables
     [SerializeField] public Canvas canvas;
     [SerializeField] float TextSpeed = 0.5f;
-    Dialogues npcDialogue;
+    public Dialogues npcDialogue;
     
     private string characterInteractedWith = null;
     private int placeInArray = 0;
@@ -61,9 +61,8 @@ public class DialogueManager : MonoBehaviour
         {
             if (CharName == npc.Name)
             {
-                //check if a button has been used and therefore need to set the reply to this first
-                    Debug.Log(CharName); //for testing purposes
-                    characterInteractedWith = CharName;
+                Debug.Log(CharName); //for testing purposes
+                characterInteractedWith = CharName;
                     if (RelationshipLevel == 0)//if they've never met
                 {
                         NPCReplyText = (npc.Name + ": " + npc.Introduction);
@@ -91,9 +90,10 @@ public class DialogueManager : MonoBehaviour
                         string[] BestFriendReplies = new string[] { npc.BestFriend1, npc.BestFriend2 };
                         NPCReplyText = BestFriendReplies[UnityEngine.Random.Range(0, 2)];
                     }
-            }
                 StartCoroutine(AnimateText());//start the typewriter effect
                 break;//stop the foreach loop continuing after we've found our target npc
+            }
+                
         }
     }
 
