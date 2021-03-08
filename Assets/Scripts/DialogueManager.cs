@@ -18,7 +18,7 @@ public class DialogueManager : MonoBehaviour
     //global Variables
     [SerializeField] public Canvas canvas;
     [SerializeField] float TextSpeed = 0.5f;
-    public Dialogues npcDialogue;
+    Dialogues npcDialogue;
     
     private string characterInteractedWith = null;
     private int placeInArray = 0;
@@ -26,6 +26,8 @@ public class DialogueManager : MonoBehaviour
     public TextAsset jsonFile;
     public string NPCReplyText = null;
     public Text textBox;
+
+    string[] NPCReplies = new string[3];
     #region buttonBools
     public bool getQuestBool = false;
     public bool CompletedQuestBool = false;
@@ -34,7 +36,6 @@ public class DialogueManager : MonoBehaviour
     public bool BuildingQBool = false;
     public bool BuildingCompleteBool = false;
     #endregion
-
 
     void Awake()
     {
@@ -63,33 +64,41 @@ public class DialogueManager : MonoBehaviour
             {
                 Debug.Log(CharName); //for testing purposes
                 characterInteractedWith = CharName;
-                    if (RelationshipLevel == 0)//if they've never met
+                switch (RelationshipLevel)
                 {
+                    case 0:
                         NPCReplyText = (npc.Name + ": " + npc.Introduction);
-
-                    }
-                    else if (RelationshipLevel == 1)//met once - Acquaintance
-                {
-                        if (npc.Acquaintance2 != null)
+                        break;
+                    case 1:
+                        if (npc.Acquaintance2 != "")
                         {
-                            string[] AcquaintanceReplies = new string[] { npc.Acquaintance1, npc.Acquaintance2 }; //add all possible replies into an array for randomisation if there are 2 replies
-                            NPCReplyText = AcquaintanceReplies[UnityEngine.Random.Range(0, 2)];
+                            Debug.Log("not null");
+                            NPCReplies[0] = npc.Acquaintance1;
+                            NPCReplies[1] = npc.Acquaintance2;
+
+                            NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 2)]);
                         }
                         else
                         {
-                            NPCReplyText = npc.Acquaintance1; // if the npc only has one acquaintance reply
+                            Debug.Log("null");
+
+                            NPCReplyText = (npc.Name + ": " + npc.Acquaintance1); 
                         }
-                    }
-                    else if (RelationshipLevel == 2)//met twice - friend
-                {
-                        string[] FriendReplies = new string[] { npc.Friend1, npc.Friend2, npc.Friend3 };
-                        NPCReplyText = FriendReplies[UnityEngine.Random.Range(0, 3)];
-                    }
-                    else if(RelationshipLevel >= 3)//met 3+ times - best friend
-                    {
-                        string[] BestFriendReplies = new string[] { npc.BestFriend1, npc.BestFriend2 };
-                        NPCReplyText = BestFriendReplies[UnityEngine.Random.Range(0, 2)];
-                    }
+                        break;
+                    case 2:
+                        NPCReplies[0] = npc.Friend1;
+                        NPCReplies[1] = npc.Friend2;
+                        NPCReplies[2] = npc.Friend3;
+
+                        NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 3)]);
+                        break;
+                    case 3:
+                        NPCReplies[0] = npc.BestFriend1;
+                        NPCReplies[1] = npc.BestFriend2;
+
+                        NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 2)]);
+                        break;
+                }
                 StartCoroutine(AnimateText());//start the typewriter effect
                 break;//stop the foreach loop continuing after we've found our target npc
             }
@@ -103,6 +112,7 @@ public class DialogueManager : MonoBehaviour
         {
             if (CharName == npc.Name)
             { //check if a button has been used and therefore need to set the reply to this first
+                
                 if (getQuestBool)
                     NPCReplyText = npc.Quest;
                 else if (CompletedQuestBool)
@@ -140,3 +150,42 @@ public class DialogueManager : MonoBehaviour
 
     
 }
+
+
+
+
+
+
+
+
+
+//*********************************************//
+//------------- RIP TO THE OLD IF'S :'( -------------------------
+//    if (RelationshipLevel == 0)//if they've never met
+//{
+//        NPCReplyText = (npc.Name + ": " + npc.Introduction);
+
+//    }
+//    else if (RelationshipLevel == 1)//met once - Acquaintance
+//{
+//        if (npc.Acquaintance2 != null)
+//        {
+//            string[] AcquaintanceReplies = new string[] { npc.Acquaintance1, npc.Acquaintance2 }; //add all possible replies into an array for randomisation if there are 2 replies
+//            NPCReplyText = AcquaintanceReplies[UnityEngine.Random.Range(0, 2)];
+//        }
+//        else
+//        {
+//            NPCReplyText = npc.Acquaintance1; // if the npc only has one acquaintance reply
+//        }
+//    }
+//    else if (RelationshipLevel == 2)//met twice - friend
+//{
+//        string[] FriendReplies = new string[] { npc.Friend1, npc.Friend2, npc.Friend3 };
+//        NPCReplyText = FriendReplies[UnityEngine.Random.Range(0, 3)];
+//    }
+//    else if(RelationshipLevel >= 3)//met 3+ times - best friend
+//    {
+//        string[] BestFriendReplies = new string[] { npc.BestFriend1, npc.BestFriend2 };
+//        NPCReplyText = BestFriendReplies[UnityEngine.Random.Range(0, 2)];
+//    }
+//**************************************************************************//

@@ -13,14 +13,14 @@ public class Player : MonoBehaviour
         {
             NPCTalkingTo = other.gameObject;
             DialogueManager.Instance.NameChecker(other.name, other.gameObject.GetComponent<NPCs>().Relationship); //run namechecker
-            other.gameObject.GetComponent<NPCs>().Relationship++; // simulate increasing the relationship level
         }
         else if (other.gameObject.CompareTag("Flynn"))//are we talking to flynn?
         {
             NPCTalkingTo = other.gameObject;
             DialogueManager.Instance.NameChecker(other.name, other.gameObject.GetComponent<NPCs>().Relationship);
-            other.gameObject.GetComponent<NPCs>().Relationship++;
         }
+        if(other.gameObject.GetComponent<NPCs>().Relationship < 3)
+            other.gameObject.GetComponent<NPCs>().Relationship++; // simulate increasing the relationship level
     }
 
     private void OnTriggerExit(Collider other) //when the player leaves the box that they were colliding with in the first place
