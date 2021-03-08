@@ -72,16 +72,12 @@ public class DialogueManager : MonoBehaviour
                     case 1:
                         if (npc.Acquaintance2 != "")
                         {
-                            Debug.Log("not null");
                             NPCReplies[0] = npc.Acquaintance1;
                             NPCReplies[1] = npc.Acquaintance2;
-
                             NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 2)]);
                         }
                         else
                         {
-                            Debug.Log("null");
-
                             NPCReplyText = (npc.Name + ": " + npc.Acquaintance1); 
                         }
                         break;
@@ -89,20 +85,17 @@ public class DialogueManager : MonoBehaviour
                         NPCReplies[0] = npc.Friend1;
                         NPCReplies[1] = npc.Friend2;
                         NPCReplies[2] = npc.Friend3;
-
                         NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 3)]);
                         break;
                     case 3:
                         NPCReplies[0] = npc.BestFriend1;
                         NPCReplies[1] = npc.BestFriend2;
-
                         NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 2)]);
                         break;
                 }
                 StartCoroutine(AnimateText());//start the typewriter effect
                 break;//stop the foreach loop continuing after we've found our target npc
             }
-                
         }
     }
 
