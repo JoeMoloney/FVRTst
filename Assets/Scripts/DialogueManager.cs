@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +20,7 @@ public class DialogueManager : MonoBehaviour
     //global Variables
     [SerializeField] public Canvas canvas;
     [SerializeField] float TextSpeed = 0.5f;
+    [SerializeField] AudioSource audioSource;
     Dialogues npcDialogue;
     
     private string characterInteractedWith = null;
@@ -28,6 +31,25 @@ public class DialogueManager : MonoBehaviour
     public Text textBox;
 
     string[] NPCReplies = new string[3];
+    //[SerializeField] List<Tuple<string, int, bool>> RelationshipStuff = new List<Tuple<string, int, bool>>();
+    //[SerializeField] List<RelationshipData> RelationshipStuff2 = new List<RelationshipData>();
+
+    public struct RelationshipDetails
+    {
+        public string NPCName { get; set; }
+        public int Level { get; set; }
+        public bool QuestGiven { get; set; }
+    }
+
+    public struct RelationshipDetails2
+    {
+        public int Level { get; set; }
+        public bool QuestGiven { get; set; }
+    }
+
+    public List<RelationshipDetails> RelationshipStuff3 = new List<RelationshipDetails>();
+
+    public Dictionary<string, RelationshipDetails2> RelationshipStuff4 = new Dictionary<string, RelationshipDetails2>();
     #region buttonBools
     public bool getQuestBool = false;
     public bool CompletedQuestBool = false;
@@ -54,6 +76,22 @@ public class DialogueManager : MonoBehaviour
     {
         npcDialogue = JsonUtility.FromJson<Dialogues>(jsonFile.text); //Convert Json Data into Dialogues Array
         canvas.enabled = false; //disable the canvas from displaying
+        foreach (NPCDialogue npc in npcDialogue.dialogues) //Foreach object within' Json File
+        {
+            //RelationshipStuff.Add(new Tuple<string, int, bool>(npc.Name, 0, false));
+            //RelationshipStuff2.Add(new RelationshipData() { NPCName = npc.Name,RelationshipLevel = 0, QuestGiven =  false});
+            RelationshipDetails nextThingInList = new RelationshipDetails { NPCName = npc.Name, Level = 0, QuestGiven = false };
+            RelationshipStuff3.Add(nextThingInList);
+
+            RelationshipDetails2 ThrowMeIn = new RelationshipDetails2 { Level = 0, QuestGiven = false };
+            RelationshipStuff4.Add(npc.Name, ThrowMeIn);
+        }
+        for(int i = 0; i<RelationshipStuff3.Count; i++)
+        {
+            Debug.Log(RelationshipStuff3[i].NPCName + ", " + RelationshipStuff3[i].Level + ", " + RelationshipStuff3[i].QuestGiven);
+
+            Debug.Log("Dict: " + RelationshipStuff3[i].NPCName + RelationshipStuff4[RelationshipStuff3[i].NPCName].Level + ", " + RelationshipStuff3[i].NPCName + RelationshipStuff4[RelationshipStuff3[i].NPCName].QuestGiven);
+        }
     }
 
     public void NameChecker(string CharName, int RelationshipLevel)
@@ -136,13 +174,24 @@ public class DialogueManager : MonoBehaviour
                 textBox.text = NPCReplyText.Substring(0, i);
                 UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = true; //allowing player movement after all text has appeared on the screen
             }
+            audioSource.Play();
             
             yield return new WaitForSeconds(TextSpeed);
         }
     }
 
-    
+    public class RelationshipData : MonoBehaviour
+    {
+        public string NPCName = null;
+        public int RelationshipLevel = 0;
+        public bool QuestGiven = false;
+    }
+
+
 }
+
+
+
 
 
 
