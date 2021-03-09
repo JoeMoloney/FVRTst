@@ -94,47 +94,83 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void NameChecker(string CharName, int RelationshipLevel)
+    //public void NameChecker(string CharName, int RelationshipLevel)
+    //{
+    //    foreach (NPCDialogue npc in npcDialogue.dialogues) //Foreach object within' Json File
+    //    {
+    //        if (CharName == npc.Name)
+    //        {
+    //            Debug.Log(CharName); //for testing purposes
+    //            characterInteractedWith = CharName;
+    //            switch (RelationshipLevel) //checking to see what relationship level the player has with the specific NPC
+    //            {
+    //                case 0:
+    //                    NPCReplyText = (npc.Name + ": " + npc.Introduction); //When they meet the first time, read out the introduction
+    //                    break;
+    //                case 1://if Acquaintance
+    //                    if (npc.Acquaintance2 != "") // included due to Flynn only having one acquaintence reply
+    //                    {
+    //                        NPCReplies[0] = npc.Acquaintance1;
+    //                        NPCReplies[1] = npc.Acquaintance2;
+    //                        NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 2)]);//choose a random one of the two possible replies
+    //                    }
+    //                    else
+    //                    {
+    //                        NPCReplyText = (npc.Name + ": " + npc.Acquaintance1); 
+    //                    }
+    //                    break;
+    //                case 2:///if NPCand player are friends
+    //                    NPCReplies[0] = npc.Friend1;
+    //                    NPCReplies[1] = npc.Friend2;
+    //                    NPCReplies[2] = npc.Friend3;
+    //                    NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 3)]);//choose a random one of the three possible replies
+    //                    break;
+    //                case 3://if they're best friends
+    //                    NPCReplies[0] = npc.BestFriend1;
+    //                    NPCReplies[1] = npc.BestFriend2;
+    //                    NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 2)]);//choose a random one of the two possible replies
+    //                    break;
+    //            }
+    //            StartCoroutine(AnimateText());//start the typewriter effect
+    //            break;//stop the foreach loop continuing after we've found our target npc
+    //        }
+    //    }
+    //}
+
+    public void NameChecker(string CharName)
     {
-        foreach (NPCDialogue npc in npcDialogue.dialogues) //Foreach object within' Json File
-        {
-            if (CharName == npc.Name)
+            Debug.Log(CharName); //for testing purposes
+            characterInteractedWith = CharName;
+            switch (RelationshipStuff4[CharName].Level) //checking to see what relationship level the player has with the specific NPC
             {
-                Debug.Log(CharName); //for testing purposes
-                characterInteractedWith = CharName;
-                switch (RelationshipLevel) //checking to see what relationship level the player has with the specific NPC
-                {
-                    case 0:
-                        NPCReplyText = (npc.Name + ": " + npc.Introduction); //When they meet the first time, read out the introduction
-                        break;
-                    case 1://if Acquaintance
-                        if (npc.Acquaintance2 != "") // included due to Flynn only having one acquaintence reply
-                        {
-                            NPCReplies[0] = npc.Acquaintance1;
-                            NPCReplies[1] = npc.Acquaintance2;
-                            NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 2)]);//choose a random one of the two possible replies
-                        }
-                        else
-                        {
-                            NPCReplyText = (npc.Name + ": " + npc.Acquaintance1); 
-                        }
-                        break;
-                    case 2:///if NPCand player are friends
-                        NPCReplies[0] = npc.Friend1;
-                        NPCReplies[1] = npc.Friend2;
-                        NPCReplies[2] = npc.Friend3;
-                        NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 3)]);//choose a random one of the three possible replies
-                        break;
-                    case 3://if they're best friends
-                        NPCReplies[0] = npc.BestFriend1;
-                        NPCReplies[1] = npc.BestFriend2;
+                case 0:
+                    NPCReplyText = (CharName + ": " + npc.Introduction); //When they meet the first time, read out the introduction
+                    break;
+                case 1://if Acquaintance
+                    if (npc.Acquaintance2 != "") //included due to Flynn only having one acquaintence reply
+                    {
+                        NPCReplies[0] = npc.Acquaintance1;
+                        NPCReplies[1] = npc.Acquaintance2;
                         NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 2)]);//choose a random one of the two possible replies
-                        break;
-                }
-                StartCoroutine(AnimateText());//start the typewriter effect
-                break;//stop the foreach loop continuing after we've found our target npc
+                    }
+                    else
+                    {
+                        NPCReplyText = (npc.Name + ": " + npc.Acquaintance1);
+                    }
+                    break;
+                case 2:///if NPCand player are friends
+                    NPCReplies[0] = npc.Friend1;
+                    NPCReplies[1] = npc.Friend2;
+                    NPCReplies[2] = npc.Friend3;
+                    NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 3)]);//choose a random one of the three possible replies
+                    break;
+                case 3://if they're best friends
+                    NPCReplies[0] = npc.BestFriend1;
+                    NPCReplies[1] = npc.BestFriend2;
+                    NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 2)]);//choose a random one of the two possible replies
+                    break;
             }
-        }
+            StartCoroutine(AnimateText());//start the typewriter effect 
     }
 
     public void  ButtonChecker(string CharName)
