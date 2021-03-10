@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class NPCQuest : MonoBehaviour
+public class NPCQuest
 {
     public string Name;
     public string Aquaintance;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class QuestInfo : MonoBehaviour
+public class QuestInfo
 {
     public NPCQuest[] questInfo;
 }

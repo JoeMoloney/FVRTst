@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     {
         UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false; //don't allow the player to move anymore
         DialogueManager.Instance.canvas.enabled = true; // show the canvas for text box, text and buttons
-        Debug.Log(DialogueManager.Instance.RelationshipStuff4[other.name].Level); // for testing
+        Debug.Log(DialogueManager.Instance.RelationshipDictionary[other.name].Level); // for testing
         if (other.gameObject.CompareTag("Peter"))//are we talking to peter?
         {
             NPCTalkingTo = other.gameObject;
@@ -19,10 +19,10 @@ public class Player : MonoBehaviour
             NPCTalkingTo = other.gameObject;
             DialogueManager.Instance.NameChecker(other.name);
         }
-        if (DialogueManager.Instance.RelationshipStuff4[other.name].Level <3)
+        if (DialogueManager.Instance.RelationshipDictionary[other.name].Level <3)
         {
-            DialogueManager.RelationshipDetails2 ThrowMeIn = new DialogueManager.RelationshipDetails2 { Level = DialogueManager.Instance.RelationshipStuff4[other.name].Level+1, QuestGiven = DialogueManager.Instance.RelationshipStuff4[other.name].QuestGiven };
-            DialogueManager.Instance.RelationshipStuff4[other.name] = ThrowMeIn;
+            DialogueManager.RelationshipDetails ThrowMeIn = new DialogueManager.RelationshipDetails { Level = DialogueManager.Instance.RelationshipDictionary[other.name].Level+1, QuestGiven = DialogueManager.Instance.RelationshipDictionary[other.name].QuestGiven };
+            DialogueManager.Instance.RelationshipDictionary[other.name] = ThrowMeIn;
         }
     }
 
