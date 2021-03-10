@@ -22,11 +22,13 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] float TextSpeed = 0.5f;
     [SerializeField] AudioSource audioSource;
     Dialogues npcDialogue;
+    QuestInfo npcQuestInfo;
     
     private string characterInteractedWith = null;
     private int placeInArray = 0;
     public int currentlyDisplayingText = 0;
     public TextAsset jsonFile;
+    public TextAsset QuestJsonFile;
     public string NPCReplyText = null;
     public Text textBox;
 
@@ -64,6 +66,7 @@ public class DialogueManager : MonoBehaviour
     private void Start()
     {
         npcDialogue = JsonUtility.FromJson<Dialogues>(jsonFile.text); //Convert Json Data into Dialogues Array
+        npcQuestInfo = JsonUtility.FromJson<QuestInfo>(QuestJsonFile.text);
         canvas.enabled = false; //disable the canvas from displaying
         foreach (NPCDialogue npc in npcDialogue.dialogues) //Foreach object within' Json File
         {
@@ -83,18 +86,34 @@ public class DialogueManager : MonoBehaviour
                 switch (RelationshipStuff4[CharName].Level) //checking to see what relationship level the player has with the specific NPC
                 {
                     case 0:
-                        NPCReplyText = (npc.Name + ": " + npc.Introduction); //When they meet the first time, read out the introduction
+                            NPCReplyText = (npc.Name + ": " + npc.Introduction); //When they meet the first time, read out the introduction
                         break;
                     case 1://if Acquaintance
-                        if (npc.Acquaintance2 != "") // included due to Flynn only having one acquaintence reply
+                        if (RelationshipStuff4[CharName].QuestGiven)
                         {
-                            NPCReplies[0] = npc.Acquaintance1;
-                            NPCReplies[1] = npc.Acquaintance2;
-                            NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 2)]);//choose a random one of the two possible replies
+                            if (npc.Acquaintance2 != "") // included due to Flynn only having one acquaintence reply
+                            {
+                                NPCReplies[0] = npc.Acquaintance1;
+                                NPCReplies[1] = npc.Acquaintance2;
+                                NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 2)]);//choose a random one of the two possible replies
+                            }
+                            else
+                            {
+                                NPCReplyText = (npc.Name + ": " + npc.Acquaintance1);
+
+                            }
                         }
                         else
                         {
-                            NPCReplyText = (npc.Name + ": " + npc.Acquaintance1);
+                            foreach(NPCQuest quest in npcQuestInfo.questInfo)
+                            {
+                                if(CharName == quest.Name)
+                                {
+                                    NPCReplyText = (quest.Name + ": " + quest.Aquaintance);
+                                    RelationshipDetails2 ThrowMeIn = new RelationshipDetails2 { Level = RelationshipStuff4[CharName].Level, QuestGiven = true};
+                                    Instance.RelationshipStuff4[CharName] = ThrowMeIn;
+                                }
+                            }
                         }
                         break;
                     case 2:///if NPCand player are friends
