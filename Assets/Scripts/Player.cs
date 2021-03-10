@@ -8,19 +8,24 @@ public class Player : MonoBehaviour
     {
         UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false; //don't allow the player to move anymore
         DialogueManager.Instance.canvas.enabled = true; // show the canvas for text box, text and buttons
-        Debug.Log(other.gameObject.GetComponent<NPCs>().Relationship); // for testing
+        Debug.Log(DialogueManager.Instance.RelationshipStuff4[other.name].Level); // for testing
         if (other.gameObject.CompareTag("Peter"))//are we talking to peter?
         {
             NPCTalkingTo = other.gameObject;
-            DialogueManager.Instance.NameChecker(other.name, other.gameObject.GetComponent<NPCs>().Relationship); //run namechecker
+            DialogueManager.Instance.NameChecker(other.name); //run namechecker
         }
         else if (other.gameObject.CompareTag("Flynn"))//are we talking to flynn?
         {
             NPCTalkingTo = other.gameObject;
-            DialogueManager.Instance.NameChecker(other.name, other.gameObject.GetComponent<NPCs>().Relationship);
+            DialogueManager.Instance.NameChecker(other.name);
         }
-        if(other.gameObject.GetComponent<NPCs>().Relationship < 3)
-            other.gameObject.GetComponent<NPCs>().Relationship++; // simulate increasing the relationship level
+        if (DialogueManager.Instance.RelationshipStuff4[other.name].Level <3)
+        {
+            int currentLevel = DialogueManager.Instance.RelationshipStuff4[other.name].Level;
+            DialogueManager.RelationshipDetails2 ThrowMeIn = new DialogueManager.RelationshipDetails2 { Level = currentLevel+1, QuestGiven = false };
+            DialogueManager.Instance.RelationshipStuff4[other.name] = ThrowMeIn;
+            Debug.Log(DialogueManager.Instance.RelationshipStuff4[other.name].Level + "Updated");
+        }
     }
 
     private void OnTriggerExit(Collider other) //when the player leaves the box that they were colliding with in the first place
