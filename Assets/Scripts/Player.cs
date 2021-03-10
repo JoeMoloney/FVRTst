@@ -21,10 +21,8 @@ public class Player : MonoBehaviour
         }
         if (DialogueManager.Instance.RelationshipStuff4[other.name].Level <3)
         {
-            int currentLevel = DialogueManager.Instance.RelationshipStuff4[other.name].Level;
-            DialogueManager.RelationshipDetails2 ThrowMeIn = new DialogueManager.RelationshipDetails2 { Level = currentLevel+1, QuestGiven = false };
+            DialogueManager.RelationshipDetails2 ThrowMeIn = new DialogueManager.RelationshipDetails2 { Level = DialogueManager.Instance.RelationshipStuff4[other.name].Level+1, QuestGiven = DialogueManager.Instance.RelationshipStuff4[other.name].QuestGiven };
             DialogueManager.Instance.RelationshipStuff4[other.name] = ThrowMeIn;
-            Debug.Log(DialogueManager.Instance.RelationshipStuff4[other.name].Level + "Updated");
         }
     }
 
