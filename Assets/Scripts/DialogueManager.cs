@@ -25,7 +25,6 @@ public class DialogueManager : MonoBehaviour
     QuestInfo npcQuestInfo;
     
     private string characterInteractedWith = null;
-    private int placeInArray = 0;
     public int currentlyDisplayingText = 0;
     public TextAsset jsonFile;
     public TextAsset QuestJsonFile;
@@ -139,7 +138,14 @@ public class DialogueManager : MonoBehaviour
         {
             if (CharName == quest.Name)
             {
-                NPCReplyText = (quest.Name + ": " + quest.Aquaintance);
+                if (RelationshipDictionary[CharName].Level == 1)
+                    NPCReplyText = (quest.Name + ": " + quest.Aquaintance);
+                else if (RelationshipDictionary[CharName].Level == 2)
+                    NPCReplyText = (quest.Name + ": " + quest.Friend);
+                else if (RelationshipDictionary[CharName].Level == 3)
+                    NPCReplyText = (quest.Name + ": " + quest.BestFriend);
+                else
+                    NPCReplyText = "Invalid text";
                 RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level, QuestGiven = true };
                 RelationshipDictionary[CharName] = ThrowMeIn;
             }
@@ -153,11 +159,31 @@ public class DialogueManager : MonoBehaviour
         {
             if (CharName == npc.Name)
             { //check if a button has been used and therefore need to set the reply to this first
-                
+
                 if (getQuestBool)
                     NPCReplyText = npc.Quest;
                 else if (CompletedQuestBool)
-                    NPCReplyText = npc.QuestComplete;
+                {
+                    if (RelationshipDictionary[CharName].Level < 3)
+                    {
+                        RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level + 1, QuestGiven = false };
+                        RelationshipDictionary[CharName] = ThrowMeIn;
+                        foreach (NPCQuest quest in npcQuestInfo.questInfo)
+                        {
+                            if (CharName == quest.Name)
+                            {
+                                if (RelationshipDictionary[CharName].Level == 1)
+                                    NPCReplyText = (quest.Name + ": " + quest.AquaintanceComplete);
+                                else if (RelationshipDictionary[CharName].Level == 2)
+                                    NPCReplyText = (quest.Name + ": " + quest.FriendComplete);
+                                else if (RelationshipDictionary[CharName].Level == 3)
+                                    NPCReplyText = (quest.Name + ": " + quest.BestFriendComplete);
+                                else
+                                    NPCReplyText = "Invalid text";
+                            }
+                        }
+                    }
+                }
                 else if (JobBool)
                     NPCReplyText = npc.Job;
                 else if (ElectionBool)

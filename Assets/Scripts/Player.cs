@@ -19,9 +19,9 @@ public class Player : MonoBehaviour
             NPCTalkingTo = other.gameObject;
             DialogueManager.Instance.NameChecker(other.name);
         }
-        if (DialogueManager.Instance.RelationshipDictionary[other.name].Level <3)
+        if(DialogueManager.Instance.RelationshipDictionary[other.name].Level ==0)
         {
-            DialogueManager.RelationshipDetails ThrowMeIn = new DialogueManager.RelationshipDetails { Level = DialogueManager.Instance.RelationshipDictionary[other.name].Level+1, QuestGiven = DialogueManager.Instance.RelationshipDictionary[other.name].QuestGiven };
+            DialogueManager.RelationshipDetails ThrowMeIn = new DialogueManager.RelationshipDetails { Level = DialogueManager.Instance.RelationshipDictionary[other.name].Level + 1, QuestGiven = false };
             DialogueManager.Instance.RelationshipDictionary[other.name] = ThrowMeIn;
         }
     }
