@@ -164,10 +164,6 @@ public class DialogueManager : MonoBehaviour
                     NPCReplyText = npc.Quest;
                 else if (CompletedQuestBool)
                 {
-                    if (RelationshipDictionary[CharName].Level < 3)
-                    {
-                        RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level + 1, QuestGiven = false };
-                        RelationshipDictionary[CharName] = ThrowMeIn;
                         foreach (NPCQuest quest in npcQuestInfo.questInfo)
                         {
                             if (CharName == quest.Name)
@@ -182,6 +178,10 @@ public class DialogueManager : MonoBehaviour
                                     NPCReplyText = "Invalid text";
                             }
                         }
+                    if (RelationshipDictionary[CharName].Level < 3)
+                    {
+                        RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level + 1, QuestGiven = false };
+                        RelationshipDictionary[CharName] = ThrowMeIn;
                     }
                 }
                 else if (JobBool)
