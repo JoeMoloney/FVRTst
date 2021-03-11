@@ -155,15 +155,19 @@ public class DialogueManager : MonoBehaviour
     
     public void  ButtonChecker(string CharName)
     {
+        Debug.Log("Running button checker"); // testing purposes
+        Debug.Log("CharName = " + CharName);
         foreach (NPCDialogue npc in npcDialogue.dialogues) //Foreach object within' Json File
         {
+            Debug.Log(npc.Name);
             if (CharName == npc.Name)
             { //check if a button has been used and therefore need to set the reply to this first
-
+                Debug.Log("Matched the charname and npc name");
                 if (getQuestBool)
                     NPCReplyText = npc.Quest;
                 else if (CompletedQuestBool)
                 {
+                    Debug.Log("CompletedQuestBool is pressed");
                         foreach (NPCQuest quest in npcQuestInfo.questInfo)
                         {
                             if (CharName == quest.Name)
@@ -192,9 +196,9 @@ public class DialogueManager : MonoBehaviour
                     NPCReplyText = npc.BuildingQ;
                 else if (BuildingCompleteBool)
                     NPCReplyText = npc.BuildingComplete;
+                StartCoroutine(AnimateText());//start the typewriter effect
+                break;//stop the foreach loop continuing after we've found our target npc
             }
-            StartCoroutine(AnimateText());//start the typewriter effect
-            break;//stop the foreach loop continuing after we've found our target npc
         }
     }
 
