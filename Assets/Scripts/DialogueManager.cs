@@ -114,7 +114,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-                public void IfNPCIsAcquaintance(string CharName)
+    public void IfNPCIsAcquaintance(string CharName)
     {
         foreach (NPCDialogue npc in npcDialogue.dialogues) //Foreach object within' Json File
         {
