@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter(Collider other)//as the player collides with one of the box npcs.
     {
         UnityStandardAssets.Characters.FirstPerson.FirstPersonController.CanMove = false; //don't allow the player to move anymore
-        DialogueManager.Instance.canvas.enabled = true; // show the canvas for text box, text and buttons
+        DialogueManager.Instance.ReplyBoxAndButtons.SetActive(true); // show the canvas for text box, text and buttons
         Debug.Log(DialogueManager.Instance.RelationshipDictionary[other.name].Level); // for testing
         if (other.gameObject.CompareTag("Peter"))//are we talking to peter?
         {
@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
         //in here I'm resetting the text that was in the textbox so it doesn't cause bugs. I'm also turning the canvas off so it's not always on screen, only when they're talking
         DialogueManager.Instance.NPCReplyText = null;
         DialogueManager.Instance.StopAllCoroutines();
-        DialogueManager.Instance.canvas.enabled = false;
+        DialogueManager.Instance.ReplyBoxAndButtons.SetActive(false);
         DialogueManager.Instance.currentlyDisplayingText = 0;
     }
     #endregion

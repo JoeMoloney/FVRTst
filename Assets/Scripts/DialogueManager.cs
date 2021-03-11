@@ -18,7 +18,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     //global Variables
-    [SerializeField] public Canvas canvas;
+    [SerializeField] public GameObject ReplyBoxAndButtons;
     [SerializeField] float TextSpeed = 0.5f;
     [SerializeField] AudioSource audioSource;
     Dialogues npcDialogue;
@@ -65,7 +65,7 @@ public class DialogueManager : MonoBehaviour
     {
         npcDialogue = JsonUtility.FromJson<Dialogues>(jsonFile.text); //Convert Json Data into Dialogues Array
         npcQuestInfo = JsonUtility.FromJson<QuestInfo>(QuestJsonFile.text);
-        canvas.enabled = false; //disable the canvas from displaying
+        ReplyBoxAndButtons.SetActive(false); //disable the canvas from displaying
         foreach (NPCDialogue npc in npcDialogue.dialogues) //Foreach object within' Json File
         {
             RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = 0, QuestGiven = false };
@@ -169,23 +169,37 @@ public class DialogueManager : MonoBehaviour
             if (CharName == quest.Name)
             {
                 if (RelationshipDictionary[CharName].Level == 1)
+                {
                     NPCReplyText = (quest.Name + ": " + quest.Aquaintance);
+                    if (QuestManager.Instance.ActiveQuests.text == "")
+                        QuestManager.Instance.ActiveQuests.text = quest.Name + ": " + quest.ASummary;
+                    else
+                        QuestManager.Instance.ActiveQuests.text += "\n" + quest.Name + ": " + quest.ASummary;
+                }
                 else if (RelationshipDictionary[CharName].Level == 2)
+                {
                     NPCReplyText = (quest.Name + ": " + quest.Friend);
+                    QuestManager.Instance.ActiveQuests.text = quest.Name + ": " + quest.FSummary;
+                }
                 else if (RelationshipDictionary[CharName].Level == 3)
+                {
                     NPCReplyText = (quest.Name + ": " + quest.BestFriend);
+                    QuestManager.Instance.ActiveQuests.text = quest.Name + ": " + quest.BFFSummary;
+                }
                 else
                     NPCReplyText = "Invalid text";
                 RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level, QuestGiven = true };
                 RelationshipDictionary[CharName] = ThrowMeIn;
+                QuestManager.Instance.QuestBox.SetActive(true);
+                
                 break;
             }
             
         }
     }
 
-    
-    public void  ButtonChecker(string CharName)
+
+    public void ButtonChecker(string CharName)
     {
         Debug.Log("Running button checker"); // testing purposes
         Debug.Log("CharName = " + CharName);
@@ -200,25 +214,29 @@ public class DialogueManager : MonoBehaviour
                 else if (CompletedQuestBool)
                 {
                     Debug.Log("CompletedQuestBool is pressed");
-                        foreach (NPCQuest quest in npcQuestInfo.questInfo)
+                    foreach (NPCQuest quest in npcQuestInfo.questInfo)
+                    {
+                        if (CharName == quest.Name)
                         {
-                            if (CharName == quest.Name)
+                            if (RelationshipDictionary[CharName].Level == 1)
                             {
-                                if (RelationshipDictionary[CharName].Level == 1)
-                                    NPCReplyText = (quest.Name + ": " + quest.AquaintanceComplete);
-                                else if (RelationshipDictionary[CharName].Level == 2)
-                                    NPCReplyText = (quest.Name + ": " + quest.FriendComplete);
-                                else if (RelationshipDictionary[CharName].Level == 3)
-                                    NPCReplyText = (quest.Name + ": " + quest.BestFriendComplete);
-                                else
-                                    NPCReplyText = "Invalid text";
+                                QuestManager.Instance.ActiveQuests.text = QuestManager.Instance.ActiveQuests.text.Replace(quest.Name + ": " + quest.ASummary, string.Empty);
+                                NPCReplyText = (quest.Name + ": " + quest.AquaintanceComplete);
                             }
+                            else if (RelationshipDictionary[CharName].Level == 2)
+                                NPCReplyText = (quest.Name + ": " + quest.FriendComplete);
+                            else if (RelationshipDictionary[CharName].Level == 3)
+                                NPCReplyText = (quest.Name + ": " + quest.BestFriendComplete);
+                            else
+                                NPCReplyText = "Invalid text";
                         }
+                        if (QuestManager.Instance.ActiveQuests.text == string.Empty)
+                            QuestManager.Instance.QuestBox.SetActive(false);
+                    }
                     if (RelationshipDictionary[CharName].Level < 3)
                     {
                         RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level + 1, QuestGiven = false };
                         RelationshipDictionary[CharName] = ThrowMeIn;
-
                     }
                 }
                 else if (JobBool)
@@ -259,8 +277,6 @@ public class DialogueManager : MonoBehaviour
         public int RelationshipLevel = 0;
         public bool QuestGiven = false;
     }
-
-
 }
 
 
