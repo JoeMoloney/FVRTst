@@ -24,7 +24,6 @@ public class DialogueManager : MonoBehaviour
     Dialogues npcDialogue;
     QuestInfo npcQuestInfo;
     
-    private string characterInteractedWith = null;
     public int currentlyDisplayingText = 0;
     public TextAsset jsonFile;
     public TextAsset QuestJsonFile;
@@ -76,61 +75,92 @@ public class DialogueManager : MonoBehaviour
 
     public void NameChecker(string CharName)
     {
+        Debug.Log(CharName); //for testing purposes
+        switch (RelationshipDictionary[CharName].Level) //checking to see what relationship level the player has with the specific NPC
+        {
+            case 0:
+                IfNPCIsOnTheirIntroduction(CharName);
+                break;
+            case 1://if Acquaintance
+                if (RelationshipDictionary[CharName].QuestGiven)
+                    IfNPCIsAcquaintance(CharName);
+                else
+                    QuestForEach(CharName);
+                break;
+            case 2:///if NPCand player are friends
+                if (RelationshipDictionary[CharName].QuestGiven)
+                    IfNPCIsFriend(CharName);
+                else
+                    QuestForEach(CharName);
+                break;
+            case 3://if they're best friends
+                if (RelationshipDictionary[CharName].QuestGiven)
+                    ifNPCIsBestFriend(CharName);
+                else
+                    QuestForEach(CharName);
+                break;
+        }
+        StartCoroutine(AnimateText());//start the typewriter effect
+    }
+
+    public void IfNPCIsOnTheirIntroduction(string CharName)
+    {
         foreach (NPCDialogue npc in npcDialogue.dialogues) //Foreach object within' Json File
         {
             if (CharName == npc.Name)
             {
-                Debug.Log(CharName); //for testing purposes
-                characterInteractedWith = CharName;
-                switch (RelationshipDictionary[CharName].Level) //checking to see what relationship level the player has with the specific NPC
-                {
-                    case 0:
-                        NPCReplyText = (npc.Name + ": " + npc.Introduction); //When they meet the first time, read out the introduction
-                        break;
-                    case 1://if Acquaintance
-                        if (RelationshipDictionary[CharName].QuestGiven)
-                        {
-                            if (npc.Acquaintance2 != "") // included due to Flynn only having one acquaintence reply
-                            {
-                                NPCReplies[0] = npc.Acquaintance1;
-                                NPCReplies[1] = npc.Acquaintance2;
-                                NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 2)]);//choose a random one of the two possible replies
-                            }
-                            else
-                                NPCReplyText = (npc.Name + ": " + npc.Acquaintance1);
-                        }
-                        else
-                        {
-                            QuestForEach(CharName);
-                        }
-                        break;
-                    case 2:///if NPCand player are friends
-                        if (RelationshipDictionary[CharName].QuestGiven)
-                        {
-                            NPCReplies[0] = npc.Friend1;
-                            NPCReplies[1] = npc.Friend2;
-                            NPCReplies[2] = npc.Friend3;
-                            NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 3)]);//choose a random one of the three possible replies
-                        }
-                        else
-                            QuestForEach(CharName);
-                        break;
-                    case 3://if they're best friends
-                        if (RelationshipDictionary[CharName].QuestGiven) { 
-                        NPCReplies[0] = npc.BestFriend1;
-                        NPCReplies[1] = npc.BestFriend2;
-                        NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 2)]);//choose a random one of the two possible replies
-                        }
-                        else
-                            QuestForEach(CharName);
-                        break;
-                }
-                StartCoroutine(AnimateText());//start the typewriter effect
-                break;//stop the foreach loop continuing after we've found our target npc
+                NPCReplyText = (npc.Name + ": " + npc.Introduction); //When they meet the first time, read out the introduction
             }
         }
     }
 
+                public void IfNPCIsAcquaintance(string CharName)
+    {
+        foreach (NPCDialogue npc in npcDialogue.dialogues) //Foreach object within' Json File
+        {
+            if (CharName == npc.Name)
+            {
+                if (npc.Acquaintance2 != "") // included due to Flynn only having one acquaintence reply
+                {
+                    NPCReplies[0] = npc.Acquaintance1;
+                    NPCReplies[1] = npc.Acquaintance2;
+                    NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 2)]);//choose a random one of the two possible replies
+                }
+                else
+                    NPCReplyText = (npc.Name + ": " + npc.Acquaintance1);
+                break;
+            }
+        }
+    }
+
+    public void IfNPCIsFriend(string CharName)
+    {
+        foreach (NPCDialogue npc in npcDialogue.dialogues) //Foreach object within' Json File
+        {
+            if (CharName == npc.Name)
+            {
+                NPCReplies[0] = npc.Friend1;
+                NPCReplies[1] = npc.Friend2;
+                NPCReplies[2] = npc.Friend3;
+                NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 3)]);//choose a random one of the three possible replies
+                break;
+            }
+        }
+    }
+
+    public void ifNPCIsBestFriend(string CharName)
+    {
+        foreach (NPCDialogue npc in npcDialogue.dialogues) //Foreach object within' Json File
+        {
+            if (CharName == npc.Name)
+            {
+                NPCReplies[0] = npc.BestFriend1;
+                NPCReplies[1] = npc.BestFriend2;
+                NPCReplyText = (npc.Name + ": " + NPCReplies[UnityEngine.Random.Range(0, 2)]);//choose a random one of the two possible replies
+                break;
+            }
+        }
+    }
 
     public void QuestForEach(string CharName)
     {
@@ -148,7 +178,9 @@ public class DialogueManager : MonoBehaviour
                     NPCReplyText = "Invalid text";
                 RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level, QuestGiven = true };
                 RelationshipDictionary[CharName] = ThrowMeIn;
+                break;
             }
+            
         }
     }
 
