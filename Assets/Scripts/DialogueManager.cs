@@ -186,6 +186,7 @@ public class DialogueManager : MonoBehaviour
                     {
                         RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level + 1, QuestGiven = false };
                         RelationshipDictionary[CharName] = ThrowMeIn;
+
                     }
                 }
                 else if (JobBool)
