@@ -18,6 +18,10 @@ public class Player : MonoBehaviour
         {
             NPCTalkingTo = other.gameObject;
             DialogueManager.Instance.NameChecker(other.name);
+        }else if (other.gameObject.CompareTag("Poppy"))//are we talking to poppy?
+        {
+            NPCTalkingTo = other.gameObject;
+            DialogueManager.Instance.NameChecker(other.name);
         }
         if(DialogueManager.Instance.RelationshipDictionary[other.name].Level ==0)
         {

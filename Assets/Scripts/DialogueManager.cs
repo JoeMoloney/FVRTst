@@ -179,12 +179,18 @@ public class DialogueManager : MonoBehaviour
                 else if (RelationshipDictionary[CharName].Level == 2)
                 {
                     NPCReplyText = (quest.Name + ": " + quest.Friend);
-                    QuestManager.Instance.ActiveQuests.text = quest.Name + ": " + quest.FSummary;
+                    if (QuestManager.Instance.ActiveQuests.text == "")
+                        QuestManager.Instance.ActiveQuests.text = quest.Name + ": " + quest.FSummary;
+                    else
+                        QuestManager.Instance.ActiveQuests.text += "\n" + quest.Name + ": " + quest.FSummary;
                 }
                 else if (RelationshipDictionary[CharName].Level == 3)
                 {
                     NPCReplyText = (quest.Name + ": " + quest.BestFriend);
-                    QuestManager.Instance.ActiveQuests.text = quest.Name + ": " + quest.BFFSummary;
+                    if (QuestManager.Instance.ActiveQuests.text == "")
+                        QuestManager.Instance.ActiveQuests.text = quest.Name + ": " + quest.BFFSummary;
+                    else
+                        QuestManager.Instance.ActiveQuests.text += "\n" + quest.Name + ": " + quest.BFFSummary;
                 }
                 else
                     NPCReplyText = "Invalid text";
@@ -197,7 +203,6 @@ public class DialogueManager : MonoBehaviour
             
         }
     }
-
 
     public void ButtonChecker(string CharName)
     {
@@ -224,11 +229,19 @@ public class DialogueManager : MonoBehaviour
                                 NPCReplyText = (quest.Name + ": " + quest.AquaintanceComplete);
                             }
                             else if (RelationshipDictionary[CharName].Level == 2)
+                            {
+                                QuestManager.Instance.ActiveQuests.text = QuestManager.Instance.ActiveQuests.text.Replace(quest.Name + ": " + quest.FSummary, string.Empty);
                                 NPCReplyText = (quest.Name + ": " + quest.FriendComplete);
+                            }
                             else if (RelationshipDictionary[CharName].Level == 3)
+                            {
+                                QuestManager.Instance.ActiveQuests.text = QuestManager.Instance.ActiveQuests.text.Replace(quest.Name + ": " + quest.BFFSummary, string.Empty);
                                 NPCReplyText = (quest.Name + ": " + quest.BestFriendComplete);
+                            }
                             else
                                 NPCReplyText = "Invalid text";
+
+                            QuestManager.Instance.ActiveQuests.text = QuestManager.Instance.ActiveQuests.text.Replace("\n", string.Empty);
                         }
                         if (QuestManager.Instance.ActiveQuests.text == string.Empty)
                             QuestManager.Instance.QuestBox.SetActive(false);
@@ -238,6 +251,7 @@ public class DialogueManager : MonoBehaviour
                         RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level + 1, QuestGiven = false };
                         RelationshipDictionary[CharName] = ThrowMeIn;
                     }
+                    
                 }
                 else if (JobBool)
                     NPCReplyText = npc.Job;
@@ -251,6 +265,32 @@ public class DialogueManager : MonoBehaviour
                 break;//stop the foreach loop continuing after we've found our target npc
             }
         }
+    }
+
+    public string GetRelationshipLevel(string NPCName)
+    {
+        string relationshipLevel = null;
+        switch (RelationshipDictionary[NPCName].Level)
+        {
+            case 0:
+                relationshipLevel = "Introduction";
+                break;
+            case 1:
+                relationshipLevel = "Acquaintance";
+                break;
+            case 2:
+                relationshipLevel = "Friend";
+                break;
+            case 3:
+                relationshipLevel = "BestFriend";
+                break;
+        }
+        return relationshipLevel;
+    }
+
+    public bool GetQuestGiven(string NPCName)
+    {
+        return RelationshipDictionary[NPCName].QuestGiven;
     }
 
     IEnumerator AnimateText() //typewriter effect
