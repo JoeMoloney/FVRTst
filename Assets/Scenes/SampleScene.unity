@@ -2909,7 +2909,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ReplyBoxAndButtons: {fileID: 346524403}
-  TextSpeed: 0.075
+  TextSpeed: 0.045
   audioSource: {fileID: 1727719833}
   currentlyDisplayingText: 0
   jsonFile: {fileID: 4900000, guid: 75c9f37080db7d54ab4223bd9b8f41bd, type: 3}
