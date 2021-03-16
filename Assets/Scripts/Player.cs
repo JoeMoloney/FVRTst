@@ -12,16 +12,16 @@ public class Player : MonoBehaviour
         if (other.gameObject.CompareTag("Peter"))//are we talking to peter?
         {
             NPCTalkingTo = other.gameObject;
-            DialogueManager.Instance.NameChecker(other.name); //run namechecker
+            DialogueManager.Instance.GeneralDialogueReply(other.name); //run GeneralDialogueReply
         }
         else if (other.gameObject.CompareTag("Flynn"))//are we talking to flynn?
         {
             NPCTalkingTo = other.gameObject;
-            DialogueManager.Instance.NameChecker(other.name);
+            DialogueManager.Instance.GeneralDialogueReply(other.name);
         }else if (other.gameObject.CompareTag("Poppy"))//are we talking to poppy?
         {
             NPCTalkingTo = other.gameObject;
-            DialogueManager.Instance.NameChecker(other.name);
+            DialogueManager.Instance.GeneralDialogueReply(other.name);
         }
         if(DialogueManager.Instance.RelationshipDictionary[other.name].Level ==0)
         {
@@ -49,7 +49,7 @@ public class Player : MonoBehaviour
 
         DialogueManager.Instance.getQuestBool = true;
 
-        DialogueManager.Instance.ButtonChecker(NPCTalkingTo.name);
+        DialogueManager.Instance.SimulatorWithButtons(NPCTalkingTo.name);
     }
 
     public void CompleteQuest()//pressing the completed quest button to sim this situation happening in the game
@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
         DialogueManager.Instance.CompletedQuestBool = true;
         DialogueManager.Instance.getQuestBool = false;
 
-        DialogueManager.Instance.ButtonChecker(NPCTalkingTo.name);
+        DialogueManager.Instance.SimulatorWithButtons(NPCTalkingTo.name);
     }
 
     public void Job()//pressing the job button to sim this situation happening in the game
@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
         DialogueManager.Instance.getQuestBool = false;
         DialogueManager.Instance.JobBool = true;
 
-        DialogueManager.Instance.ButtonChecker(NPCTalkingTo.name);
+        DialogueManager.Instance.SimulatorWithButtons(NPCTalkingTo.name);
     }
 
     public void Election()//pressing the election button to sim this situation happening in the game
@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
         DialogueManager.Instance.JobBool = false;
         DialogueManager.Instance.ElectionBool = true;
 
-        DialogueManager.Instance.ButtonChecker(NPCTalkingTo.name);
+        DialogueManager.Instance.SimulatorWithButtons(NPCTalkingTo.name);
     }
 
     public void BuildingQ()//pressing the get the building quest button to sim this situation happening in the game
@@ -103,7 +103,7 @@ public class Player : MonoBehaviour
         DialogueManager.Instance.ElectionBool = false;
         DialogueManager.Instance.BuildingQBool = true;
 
-        DialogueManager.Instance.ButtonChecker(NPCTalkingTo.name);
+        DialogueManager.Instance.SimulatorWithButtons(NPCTalkingTo.name);
     }
 
     public void BuildingComplete()//pressing the building quest complete button to sim this situation happening in the game
@@ -119,7 +119,7 @@ public class Player : MonoBehaviour
         DialogueManager.Instance.BuildingQBool = false;
         DialogueManager.Instance.BuildingCompleteBool = true;
 
-        DialogueManager.Instance.ButtonChecker(NPCTalkingTo.name);
+        DialogueManager.Instance.SimulatorWithButtons(NPCTalkingTo.name);
     }
 
     #endregion

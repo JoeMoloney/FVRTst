@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,11 +23,11 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] float TextSpeed = 0.5f;
     [SerializeField] AudioSource audioSource;
     Dialogues npcDialogue;
-    QuestInfo npcQuestInfo;
+    //QuestInfo npcQuestInfo;
     
     public int currentlyDisplayingText = 0;
     public TextAsset jsonFile;
-    public TextAsset QuestJsonFile;
+    //public TextAsset QuestJsonFile;
     public string NPCReplyText = null;
     public Text textBox;
 
@@ -66,7 +65,7 @@ public class DialogueManager : MonoBehaviour
     private void Start()
     {
         npcDialogue = JsonUtility.FromJson<Dialogues>(jsonFile.text); //Convert Json Data into Dialogues Array
-        npcQuestInfo = JsonUtility.FromJson<QuestInfo>(QuestJsonFile.text);
+        //npcQuestInfo = JsonUtility.FromJson<QuestInfo>(QuestJsonFile.text);
         ReplyBoxAndButtons.SetActive(false); //disable the canvas from displaying
         foreach (NPCDialogue npc in npcDialogue.dialogues) //Foreach object within' Json File
         {
@@ -75,7 +74,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void NameChecker(string CharName)
+    public void GeneralDialogueReply(string CharName)
     {
         Debug.Log(CharName); //for testing purposes
         switch (RelationshipDictionary[CharName].Level) //checking to see what relationship level the player has with the specific NPC
@@ -87,19 +86,19 @@ public class DialogueManager : MonoBehaviour
                 if (RelationshipDictionary[CharName].QuestGiven)
                     IfNPCIsAcquaintance(CharName);
                 else
-                    QuestForEach(CharName);
+                    QuestReplyForEachLevel(CharName);
                 break;
             case 2:///if NPCand player are friends
                 if (RelationshipDictionary[CharName].QuestGiven)
                     IfNPCIsFriend(CharName);
                 else
-                    QuestForEach(CharName);
+                    QuestReplyForEachLevel(CharName);
                 break;
             case 3://if they're best friends
                 if (RelationshipDictionary[CharName].QuestGiven)
                     ifNPCIsBestFriend(CharName);
                 else
-                    QuestForEach(CharName);
+                    QuestReplyForEachLevel(CharName);
                 break;
         }
         StartCoroutine(AnimateText());//start the typewriter effect
@@ -164,7 +163,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void QuestForEach(string CharName)
+    public void QuestReplyForEachLevel(string CharName)
     {
         foreach (NPCQuest quest in npcQuestInfo.questInfo)
         {
@@ -206,7 +205,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void ButtonChecker(string CharName)
+    public void SimulatorWithButtons(string CharName)
     {
         Debug.Log("Running button checker"); // testing purposes
         Debug.Log("CharName = " + CharName);
@@ -320,53 +319,5 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(TextSpeed);
         }
     }
-
-    public class RelationshipData : MonoBehaviour
-    {
-        public string NPCName = null;
-        public int RelationshipLevel = 0;
-        public bool QuestGiven = false;
-    }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-//*********************************************//
-//------------- RIP TO THE OLD IF'S :'( -------------------------
-//    if (RelationshipLevel == 0)//if they've never met
-//{
-//        NPCReplyText = (npc.Name + ": " + npc.Introduction);
-
-//    }
-//    else if (RelationshipLevel == 1)//met once - Acquaintance
-//{
-//        if (npc.Acquaintance2 != null)
-//        {
-//            string[] AcquaintanceReplies = new string[] { npc.Acquaintance1, npc.Acquaintance2 }; //add all possible replies into an array for randomisation if there are 2 replies
-//            NPCReplyText = AcquaintanceReplies[UnityEngine.Random.Range(0, 2)];
-//        }
-//        else
-//        {
-//            NPCReplyText = npc.Acquaintance1; // if the npc only has one acquaintance reply
-//        }
-//    }
-//    else if (RelationshipLevel == 2)//met twice - friend
-//{
-//        string[] FriendReplies = new string[] { npc.Friend1, npc.Friend2, npc.Friend3 };
-//        NPCReplyText = FriendReplies[UnityEngine.Random.Range(0, 3)];
-//    }
-//    else if(RelationshipLevel >= 3)//met 3+ times - best friend
-//    {
-//        string[] BestFriendReplies = new string[] { npc.BestFriend1, npc.BestFriend2 };
-//        NPCReplyText = BestFriendReplies[UnityEngine.Random.Range(0, 2)];
-//    }
-//**************************************************************************//
