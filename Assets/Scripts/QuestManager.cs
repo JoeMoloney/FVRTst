@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+have a callback mathod when updated the list
+
 public class QuestManager : MonoBehaviour
 {
     [SerializeField] public GameObject QuestBox = null;
@@ -14,16 +16,14 @@ public class QuestManager : MonoBehaviour
     public struct Quest
     {
         public string NPCName;
-        public string AquaintanceQuest;
-        public string AquaintanceComplete;
         public string ASummary;
-        public string FriendQuest;
-        public string FriendComplete;
         public string FSummary;
-        public string BestFriendQuest;
-        public string BestFriendComplete;
         public string BFFSummary;
+        public int FriendLevel;
+        public bool QuestComplete;
     }
+    Add
+        remove
 
     //creaing an Instance
     private static QuestManager instance;
@@ -72,3 +72,11 @@ public class QuestManager : MonoBehaviour
         }
     }
 }
+///void OnmapItemsUpdated(SyncListmapItem.Operation op, int index, mapItem oldItem, mapItem newItem)
+    {
+        Debug.Log("Value change detected");
+        Debug.Log("There are this many items in the list" + mapItems.Count);
+
+        switch (op)
+        {
+            case SyncListmapItem.Operation.OP_ADD:
