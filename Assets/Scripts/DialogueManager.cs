@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+<<<<<<< HEAD
 using System.Linq;
+=======
+>>>>>>> parent of aa1fc90 (fixing the last of the quest diag box bugs)
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -241,10 +244,8 @@ public class DialogueManager : MonoBehaviour
                             }
                             else
                                 NPCReplyText = "Invalid text";
-                            if (!StringIncludesLetters(QuestManager.Instance.ActiveQuests.text))
-                            {
-                                QuestManager.Instance.ActiveQuests.text = QuestManager.Instance.ActiveQuests.text.Replace("\n", string.Empty);
-                            }
+
+                            QuestManager.Instance.ActiveQuests.text = QuestManager.Instance.ActiveQuests.text.Replace("\n", string.Empty);
                         }
                         if (QuestManager.Instance.ActiveQuests.text == string.Empty)
                             QuestManager.Instance.QuestBox.SetActive(false);
@@ -268,12 +269,6 @@ public class DialogueManager : MonoBehaviour
                 break;//stop the foreach loop continuing after we've found our target npc
             }
         }
-    }
-
-    private static bool StringIncludesLetters(String str)
-    {
-        return QuestManager.Instance.ActiveQuests.text.Any(x => char.IsLetter(x));
-        //return Regex.IsMatch(str, @"^[a-zA-Z]+$");
     }
 
     public string GetRelationshipLevel(string NPCName)
