@@ -17,17 +17,14 @@ public class Player : MonoBehaviour
         else if (other.gameObject.CompareTag("Flynn"))//are we talking to flynn?
         {
             NPCTalkingTo = other.gameObject;
-<<<<<<< HEAD
             DialogueManager.Instance.GeneralDialogueReply(other.name);
-        }else if (other.gameObject.CompareTag("Poppy"))//are we talking to poppy?
+        }
+        else if (other.gameObject.CompareTag("Poppy"))//are we talking to poppy?
         {
             NPCTalkingTo = other.gameObject;
             DialogueManager.Instance.GeneralDialogueReply(other.name);
-=======
-            DialogueManager.Instance.NameChecker(other.name);
->>>>>>> parent of 3f4f23e (add new methods, new npc, quick fix for \n problem)
         }
-        if(DialogueManager.Instance.RelationshipDictionary[other.name].Level ==0)
+        if (DialogueManager.Instance.RelationshipDictionary[other.name].Level == 0)
         {
             DialogueManager.RelationshipDetails ThrowMeIn = new DialogueManager.RelationshipDetails { Level = DialogueManager.Instance.RelationshipDictionary[other.name].Level + 1, QuestGiven = false };
             DialogueManager.Instance.RelationshipDictionary[other.name] = ThrowMeIn;

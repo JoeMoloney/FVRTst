@@ -3,27 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-have a callback mathod when updated the list
+//work on setting bools when done, friend level in QM, look into callbacks
 
 public class QuestManager : MonoBehaviour
 {
     [SerializeField] public GameObject QuestBox = null;
     [SerializeField] public Text ActiveQuests = null;
     public TextAsset QuestJsonFile;
-    QuestInfo npcQuestInfo;
-    public List<Quest> listOfQuests = new List<Quest>();
-
+    public QuestInfo npcQuestInfo;
+    public Dictionary<string, Quest> questSummaries = new Dictionary<string, Quest>();
+    public List<string> QuestSummaryListToDisplay = new List<string>();
     public struct Quest
     {
-        public string NPCName;
         public string ASummary;
         public string FSummary;
         public string BFFSummary;
         public int FriendLevel;
-        public bool QuestComplete;
+        public bool AQuestComplete;
+        public bool FQuestComplete;
+        public bool BFFQuestComplete;
     }
-    Add
-        remove
 
     //creaing an Instance
     private static QuestManager instance;
@@ -57,26 +56,108 @@ public class QuestManager : MonoBehaviour
         {
             Quest newQuestToAdd = new Quest
             {
-                NPCName = quest.Name,
-                AquaintanceQuest = quest.Aquaintance,
-                AquaintanceComplete = quest.AquaintanceComplete,
                 ASummary = quest.ASummary,
-                FriendQuest = quest.Friend,
-                FriendComplete = quest.FriendComplete,
                 FSummary = quest.FSummary,
-                BestFriendQuest = quest.BestFriend,
-                BestFriendComplete = quest.BestFriendComplete,
-                BFFSummary = quest.BFFSummary
+                BFFSummary = quest.BFFSummary,
+                FriendLevel = 0,
+                AQuestComplete = false,
+                FQuestComplete = false,
+                BFFQuestComplete = false
             };
-            listOfQuests.Add(newQuestToAdd);
+            questSummaries.Add(quest.Name, newQuestToAdd);
         }
     }
-}
-///void OnmapItemsUpdated(SyncListmapItem.Operation op, int index, mapItem oldItem, mapItem newItem)
-    {
-        Debug.Log("Value change detected");
-        Debug.Log("There are this many items in the list" + mapItems.Count);
 
-        switch (op)
+    public void QuestReplyForEachLevel(string CharName)
+    {
+        foreach (NPCQuest quest in npcQuestInfo.questInfo)
         {
-            case SyncListmapItem.Operation.OP_ADD:
+            if (CharName == quest.Name)
+            {
+                switch (DialogueManager.Instance.RelationshipDictionary[CharName].Level)
+                {
+                    case 1:
+                        {
+                            DialogueManager.Instance.NPCReplyText = (CharName + ": " + quest.Aquaintance);
+                            QuestSummaryListToDisplay.Add(CharName + ": " + questSummaries[CharName].ASummary);
+                            break;
+                        }
+                    case 2:
+                        {
+                            DialogueManager.Instance.NPCReplyText = (CharName + ": " + quest.Friend);
+                            QuestSummaryListToDisplay.Add(CharName + ": " + questSummaries[CharName].FSummary);
+                            break;
+                        }
+                    case 3:
+                        {
+                            DialogueManager.Instance.NPCReplyText = (CharName + ": " + quest.BestFriend);
+                            QuestSummaryListToDisplay.Add(CharName + ": " + questSummaries[CharName].BFFSummary);
+                            break;
+                        }
+                    default:
+                        {
+                            DialogueManager.Instance.NPCReplyText = "Invalid text";
+                            break;
+                        }
+                }
+                DialogueManager.Instance.NewItemforDictionary(CharName);
+                QuestBox.SetActive(true);
+                updateText();
+                break;
+            }
+
+        }
+    }
+
+    public void updateText()
+    {
+        ActiveQuests.text = string.Empty;
+
+        for (int i = 0; i < QuestSummaryListToDisplay.Count; i++)
+        {
+            ActiveQuests.text += QuestSummaryListToDisplay[i] + "\n";
+        }
+
+    }
+
+    public void RemoveFromList(string CharName, int RelLevel)
+    {
+        Debug.Log("Charname: " + CharName + ", rel = " + RelLevel);
+        foreach (string summary in QuestSummaryListToDisplay)
+        {
+            Debug.Log(summary);
+            if (RelLevel == 1)
+            {
+                if (summary == (CharName + ": " + questSummaries[CharName].ASummary))
+                {
+                    QuestSummaryListToDisplay.Remove(summary);
+                    updateText();
+                    break;
+                }
+            }
+            else if (RelLevel == 2)
+            {
+                if (summary == (CharName + ": " + questSummaries[CharName].FSummary))
+                {
+                    QuestSummaryListToDisplay.Remove(summary);
+                    updateText();
+                    break;
+                }
+            }
+            else if (RelLevel == 3)
+            {
+                if (summary == (CharName + ": " + questSummaries[CharName].BFFSummary))
+                {
+                    QuestSummaryListToDisplay.Remove(summary);
+                    updateText();
+                    break;
+                }
+            }
+
+        }
+
+    }
+
+
+
+}
