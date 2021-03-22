@@ -169,6 +169,36 @@ public class DialogueManager : MonoBehaviour
         RelationshipDictionary[CharName] = ThrowMeIn;
     }
 
+    public void NPCInteraction(string CharName)
+    {
+        foreach (NPCQuest quest in QuestManager.Instance.npcQuestInfo.questInfo)
+        {
+            if (CharName == quest.Name)
+            {
+                if (RelationshipDictionary[CharName].Level == 1)
+                    NPCReplyText = (quest.Name + ": " + quest.AquaintanceComplete);
+                else if (RelationshipDictionary[CharName].Level == 2)
+                    NPCReplyText = (quest.Name + ": " + quest.FriendComplete);
+                else if (RelationshipDictionary[CharName].Level == 3)
+                    NPCReplyText = (quest.Name + ": " + quest.BestFriendComplete);
+                else
+                    NPCReplyText = "Invalid text";
+                QuestManager.Instance.RemoveFromList(CharName, RelationshipDictionary[CharName].Level);
+                if (!StringIncludesLetters(QuestManager.Instance.ActiveQuests.text))
+                {
+                    QuestManager.Instance.ActiveQuests.text = QuestManager.Instance.ActiveQuests.text.Replace("\n", string.Empty);
+                }
+            }
+            if (QuestManager.Instance.ActiveQuests.text == string.Empty)
+                QuestManager.Instance.QuestBox.SetActive(false);
+        }
+        if (RelationshipDictionary[CharName].Level < 3)
+        {
+            RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level + 1, QuestGiven = false };
+            RelationshipDictionary[CharName] = ThrowMeIn;
+        }
+    }
+
     public void SimulatorWithButtons(string CharName)
     {
         foreach (NPCDialogue npc in npcDialogue.dialogues) //Foreach object within' Json File
@@ -179,33 +209,7 @@ public class DialogueManager : MonoBehaviour
                     NPCReplyText = npc.Quest;
                 else if (CompletedQuestBool)
                 {
-                    foreach (NPCQuest quest in QuestManager.Instance.npcQuestInfo.questInfo)
-                    {
-                        if (CharName == quest.Name)
-                        {
-                            if (RelationshipDictionary[CharName].Level == 1)
-                                NPCReplyText = (quest.Name + ": " + quest.AquaintanceComplete);
-                            else if (RelationshipDictionary[CharName].Level == 2)
-                                NPCReplyText = (quest.Name + ": " + quest.FriendComplete);
-                            else if (RelationshipDictionary[CharName].Level == 3)
-                                NPCReplyText = (quest.Name + ": " + quest.BestFriendComplete);
-                            else
-                                NPCReplyText = "Invalid text";
-                            QuestManager.Instance.RemoveFromList(CharName, RelationshipDictionary[CharName].Level);
-                            if (!StringIncludesLetters(QuestManager.Instance.ActiveQuests.text))
-                            {
-                                QuestManager.Instance.ActiveQuests.text = QuestManager.Instance.ActiveQuests.text.Replace("\n", string.Empty);
-                            }
-                        }
-                        if (QuestManager.Instance.ActiveQuests.text == string.Empty)
-                            QuestManager.Instance.QuestBox.SetActive(false);
-                    }
-                    if (RelationshipDictionary[CharName].Level < 3)
-                    {
-                        RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level + 1, QuestGiven = false };
-                        RelationshipDictionary[CharName] = ThrowMeIn;
-                    }
-
+                    NPCInteraction(CharName);
                 }
                 else if (JobBool)
                     NPCReplyText = npc.Job;
