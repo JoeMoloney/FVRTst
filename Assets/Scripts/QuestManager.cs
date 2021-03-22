@@ -18,7 +18,6 @@ public class QuestManager : MonoBehaviour
         public string ASummary;
         public string FSummary;
         public string BFFSummary;
-        public int FriendLevel;
         public bool AQuestComplete;
         public bool FQuestComplete;
         public bool BFFQuestComplete;
@@ -59,7 +58,6 @@ public class QuestManager : MonoBehaviour
                 ASummary = quest.ASummary,
                 FSummary = quest.FSummary,
                 BFFSummary = quest.BFFSummary,
-                FriendLevel = 0,
                 AQuestComplete = false,
                 FQuestComplete = false,
                 BFFQuestComplete = false
@@ -123,6 +121,15 @@ public class QuestManager : MonoBehaviour
     public void RemoveFromList(string CharName, int RelLevel)
     {
         Debug.Log("Charname: " + CharName + ", rel = " + RelLevel);
+        Quest newQuestToAdd = new Quest
+        {
+            ASummary = questSummaries[CharName].ASummary,
+            FSummary = questSummaries[CharName].FSummary,
+            BFFSummary = questSummaries[CharName].BFFSummary,
+            AQuestComplete = questSummaries[CharName].AQuestComplete,
+            FQuestComplete = questSummaries[CharName].FQuestComplete,
+            BFFQuestComplete = questSummaries[CharName].BFFQuestComplete
+        };
         foreach (string summary in QuestSummaryListToDisplay)
         {
             Debug.Log(summary);
@@ -131,6 +138,7 @@ public class QuestManager : MonoBehaviour
                 if (summary == (CharName + ": " + questSummaries[CharName].ASummary))
                 {
                     QuestSummaryListToDisplay.Remove(summary);
+                    newQuestToAdd.AQuestComplete = true;
                     updateText();
                     break;
                 }
@@ -140,6 +148,7 @@ public class QuestManager : MonoBehaviour
                 if (summary == (CharName + ": " + questSummaries[CharName].FSummary))
                 {
                     QuestSummaryListToDisplay.Remove(summary);
+                    newQuestToAdd.FQuestComplete = true;
                     updateText();
                     break;
                 }
@@ -149,13 +158,13 @@ public class QuestManager : MonoBehaviour
                 if (summary == (CharName + ": " + questSummaries[CharName].BFFSummary))
                 {
                     QuestSummaryListToDisplay.Remove(summary);
+                    newQuestToAdd.BFFQuestComplete = true;
                     updateText();
                     break;
                 }
             }
-
         }
-
+        questSummaries[CharName] = newQuestToAdd;
     }
 
 
