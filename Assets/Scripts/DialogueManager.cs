@@ -170,7 +170,7 @@ public class DialogueManager : MonoBehaviour
         RelationshipDictionary[CharName] = ThrowMeIn;
     }
 
-    public void NPCQuestCompletd(string CharName)
+    public void NPCQuestCompleted(string CharName)
     {
         RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level, QuestGiven = true, CurrentQuestCompleted = true };
         RelationshipDictionary[CharName] = ThrowMeIn;
@@ -233,9 +233,7 @@ public class DialogueManager : MonoBehaviour
                 if (getQuestBool)
                     NPCReplyText = npc.Quest;
                 else if (CompletedQuestBool)
-                {
-                    NPCQuestCompletd(CharName);
-                }
+                    NPCQuestCompleted(CharName);
                 else if (JobBool)
                     NPCReplyText = npc.Job;
                 else if (ElectionBool)
