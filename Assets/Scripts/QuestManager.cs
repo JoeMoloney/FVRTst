@@ -101,6 +101,7 @@ public class QuestManager : MonoBehaviour
                 DialogueManager.Instance.NewItemforDictionary(CharName);
                 QuestBox.SetActive(true);
                 updateText();
+                StartCoroutine(DialogueManager.Instance.AnimateText());
                 break;
             }
 

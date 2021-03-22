@@ -12,23 +12,23 @@ public class Player : MonoBehaviour
         if (other.gameObject.CompareTag("Peter"))//are we talking to peter?
         {
             NPCTalkingTo = other.gameObject;
-            DialogueManager.Instance.GeneralDialogueReply(other.name); //run GeneralDialogueReply
+            DialogueManager.Instance.NPCInteraction(other.name); //run GeneralDialogueReply
         }
         else if (other.gameObject.CompareTag("Flynn"))//are we talking to flynn?
         {
             NPCTalkingTo = other.gameObject;
-            DialogueManager.Instance.GeneralDialogueReply(other.name);
+            DialogueManager.Instance.NPCInteraction(other.name);
         }
         else if (other.gameObject.CompareTag("Poppy"))//are we talking to poppy?
         {
             NPCTalkingTo = other.gameObject;
-            DialogueManager.Instance.GeneralDialogueReply(other.name);
+            DialogueManager.Instance.NPCInteraction(other.name);
         }
-        if (DialogueManager.Instance.RelationshipDictionary[other.name].Level == 0)
-        {
-            DialogueManager.RelationshipDetails ThrowMeIn = new DialogueManager.RelationshipDetails { Level = DialogueManager.Instance.RelationshipDictionary[other.name].Level + 1, QuestGiven = false };
-            DialogueManager.Instance.RelationshipDictionary[other.name] = ThrowMeIn;
-        }
+        //if (DialogueManager.Instance.RelationshipDictionary[other.name].Level == 0)
+        //{
+        //    DialogueManager.RelationshipDetails ThrowMeIn = new DialogueManager.RelationshipDetails { Level = DialogueManager.Instance.RelationshipDictionary[other.name].Level + 1, QuestGiven = false };
+        //    DialogueManager.Instance.RelationshipDictionary[other.name] = ThrowMeIn;
+        //}
     }
 
     private void OnTriggerExit(Collider other) //when the player leaves the box that they were colliding with in the first place

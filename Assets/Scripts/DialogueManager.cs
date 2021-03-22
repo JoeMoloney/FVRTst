@@ -37,6 +37,7 @@ public class DialogueManager : MonoBehaviour
     {
         public int Level { get; set; }
         public bool QuestGiven { get; set; }
+        public bool CurrentQuestCompleted { get; set; }
     }
 
     public Dictionary<string, RelationshipDetails> RelationshipDictionary = new Dictionary<string, RelationshipDetails>();
@@ -69,7 +70,7 @@ public class DialogueManager : MonoBehaviour
         ReplyBoxAndButtons.SetActive(false); //disable the canvas from displaying
         foreach (NPCDialogue npc in npcDialogue.dialogues) //Foreach object within' Json File
         {
-            RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = 0, QuestGiven = false };
+            RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = 0, QuestGiven = false, CurrentQuestCompleted = false };
             RelationshipDictionary.Add(npc.Name, ThrowMeIn);
         }
     }
@@ -165,11 +166,17 @@ public class DialogueManager : MonoBehaviour
 
     public void NewItemforDictionary(string CharName)
     {
-        RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level, QuestGiven = true };
+        RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level, QuestGiven = true, CurrentQuestCompleted = false };
         RelationshipDictionary[CharName] = ThrowMeIn;
     }
 
-    public void NPCInteraction(string CharName)
+    public void NPCQuestCompletd(string CharName)
+    {
+        RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level, QuestGiven = true, CurrentQuestCompleted = true };
+        RelationshipDictionary[CharName] = ThrowMeIn;
+    }
+
+    public void NPCQuestCompletionReply(string CharName)
     {
         foreach (NPCQuest quest in QuestManager.Instance.npcQuestInfo.questInfo)
         {
@@ -194,9 +201,27 @@ public class DialogueManager : MonoBehaviour
         }
         if (RelationshipDictionary[CharName].Level < 3)
         {
-            RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level + 1, QuestGiven = false };
+            RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level + 1, QuestGiven = false, CurrentQuestCompleted = false };
             RelationshipDictionary[CharName] = ThrowMeIn;
         }
+        StartCoroutine(AnimateText());
+    }
+
+    public void NPCInteraction(string CharName)
+    {
+        if (!RelationshipDictionary[CharName].QuestGiven)
+            if (RelationshipDictionary[CharName].Level == 0)
+            {
+                GeneralDialogueReply(CharName);
+                RelationshipDetails ThrowMeIn = new RelationshipDetails { Level = RelationshipDictionary[CharName].Level + 1, QuestGiven = false, CurrentQuestCompleted = false };
+                RelationshipDictionary[CharName] = ThrowMeIn;
+            }
+            else
+                QuestManager.Instance.QuestReplyForEachLevel(CharName);
+        else if (RelationshipDictionary[CharName].QuestGiven && !RelationshipDictionary[CharName].CurrentQuestCompleted)
+            GeneralDialogueReply(CharName);
+        else if (RelationshipDictionary[CharName].QuestGiven && RelationshipDictionary[CharName].CurrentQuestCompleted)
+            NPCQuestCompletionReply(CharName);
     }
 
     public void SimulatorWithButtons(string CharName)
@@ -209,7 +234,7 @@ public class DialogueManager : MonoBehaviour
                     NPCReplyText = npc.Quest;
                 else if (CompletedQuestBool)
                 {
-                    NPCInteraction(CharName);
+                    NPCQuestCompletd(CharName);
                 }
                 else if (JobBool)
                     NPCReplyText = npc.Job;
@@ -256,7 +281,7 @@ public class DialogueManager : MonoBehaviour
         return RelationshipDictionary[NPCName].QuestGiven;
     }
 
-    IEnumerator AnimateText() //typewriter effect
+    public IEnumerator AnimateText() //typewriter effect
     {
         for (int i = 0; i < (NPCReplyText.Length + 1); i++)
         {
